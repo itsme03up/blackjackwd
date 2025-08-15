@@ -32,12 +32,23 @@ export default function Landing() {
   </div>
                 {/* 中央タイトル */}
                 <div className="text-center">
-                    <h1
-                        className="font-[Stalinist_One] text-[clamp(2.5rem,7vw,6rem)] tracking-wider text-white [animation:titleGlow_2.2s_ease-in-out_infinite]"
-                        style={{ fontFamily: '"Stalinist One", sans-serif' }}
-                    >
-                        BLACKJACK
-                    </h1>
+                    <div className="flex flex-col items-center justify-center gap-2 relative">
+                        <div className="absolute left-1/2 top-0 -translate-x-1/2 z-40 w-[240px] h-[240px] pointer-events-none">
+                            <div className="w-full h-full rounded-full bg-white/80 blur-[60px]" />
+                        </div>
+                        <img
+                            src="/image/gopnikwd.png"
+                            alt="gopnikwd"
+                            className="absolute left-1/2 top-0 -translate-x-1/2 z-30 w-[180px] h-[180px] object-contain drop-shadow-lg"
+                            style={{ pointerEvents: 'none' }}
+                        />
+                        <h1
+                            className="font-[Stalinist_One] text-[clamp(2.5rem,7vw,6rem)] tracking-wider text-white [animation:titleGlow_2.2s_ease-in-out_infinite] relative z-20"
+                            style={{ fontFamily: '"Stalinist One", sans-serif' }}
+                        >
+                            BLACKJACK
+                        </h1>
+                    </div>
 
                     {/* 3本ライン */}
                     <div className="mt-8 w-[min(700px,90vw)]">
@@ -56,7 +67,7 @@ export default function Landing() {
                     </p>
 
                     {/* スタート＆レビューへの導線（shadcn/uiボタン・縦並び） */}
-                    <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-xs mx-auto">
+                    <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-xs mx-auto relative z-50">
                         <div className="w-full rounded-xl bg-black/70 p-4 flex justify-center">
                             <Link to="/game">
                                 <Button variant="default" size="lg" className="text-lg min-w-[180px]">
