@@ -4,7 +4,10 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* ネオン色（ピンク＆ライトブルー） */
+  --neon-pink:#ff3ea5;
+  --neon-blue:#2de2e6;
+  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -47,7 +50,17 @@
   --sidebar-accent: oklch(0.967 0.001 286.375);
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --sidebar-ring: oklch(0.705 0.015 286.067); */
+}
+@keyframes neonPulse {
+  0%   { filter: drop-shadow(0 0 8px var(--neon-blue)) drop-shadow(0 0 3px white); }
+  50%  { filter: drop-shadow(0 0 18px var(--neon-pink)) drop-shadow(0 0 6px white); }
+  100% { filter: drop-shadow(0 0 8px var(--neon-blue)) drop-shadow(0 0 3px white); }
+}
+
+@keyframes titleGlow {
+  0%,100% { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink); }
+  50%     { text-shadow: 0 0 12px var(--neon-blue), 0 0 28px var(--neon-blue); }
 }
 
 a {
