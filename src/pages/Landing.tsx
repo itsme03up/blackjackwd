@@ -3,18 +3,36 @@ import { Link } from 'react-router-dom'
 export default function Landing() {
     return (
         <main className="relative mx-auto grid min-h-dvh place-items-center px-6">
-            <div className="relative flex items-center justify-center h-screen bg-black">
-                {/* 三本線 */}
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <span className="w-1 h-64 bg-white block"></span>
-                    <span className="w-1 h-64 bg-white block"></span>
-                    <span className="w-1 h-64 bg-white block"></span>
-                </div>
+           <div className="relative min-h-dvh flex items-center justify-center bg-zinc-950 overflow-hidden">
+  {/* 三本の縦線：アディダス風（全高） */}
+  <div
+    className="
+      pointer-events-none absolute inset-0 z-0
+      flex justify-center
+    "
+  >
+    {/* 中央グループ */}
+    <div
+      className="
+        h-dvh flex items-stretch
+        [gap:var(--stripe-gap)]
+      "
+      style={{
+        // 太さ・間隔一括調整できる
+        // 例: 幅 6px / 間隔 10px（モバイル）, 幅 10px / 間隔 16px（PC）
+        ['--stripe-w' as any]: '24px',
+        ['--stripe-gap' as any]: '30px',
+      }}
+    >
+      <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
+      <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_14px_var(--neon-pink)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
+      <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
+    </div>
+  </div>
                 {/* 中央タイトル */}
                 <div className="text-center">
                     <h1
-                        className="font-[Stalinist_One] text-4xl sm:text-6xl tracking-wider text-white
-                     [animation:titleGlow_2.2s_ease-in-out_infinite]"
+                        className="font-[Stalinist_One] text-[clamp(2.5rem,7vw,6rem)] tracking-wider text-white [animation:titleGlow_2.2s_ease-in-out_infinite]"
                         style={{ fontFamily: '"Stalinist One", sans-serif' }}
                     >
                         BLACKJACK
