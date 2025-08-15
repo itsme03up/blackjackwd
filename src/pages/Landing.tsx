@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Button } from '../components/ui/button'
 
 export default function Landing() {
     return (
@@ -54,25 +55,22 @@ export default function Landing() {
                         漆黒に走る三本線。選ぶのは、ヒットか、スタンドか。
                     </p>
 
-                    {/* スタート＆レビューへの導線 */}
-                    <div className="mt-10 flex items-center justify-center gap-4">
-                        <Link
-                            to="/game"
-                            className="inline-flex items-center gap-2 rounded-xl border border-zinc-800
-                       bg-zinc-900 px-6 py-3 text-white transition
-                       hover:border-white/40 hover:[filter:drop-shadow(0_0_10px_var(--neon-blue))]"
-                        >
-                            ▶ Start Game
-                        </Link>
-
-                        <Link
-                            to="/review"
-                            className="inline-flex items-center gap-2 rounded-xl border border-zinc-800
-                       px-6 py-3 text-zinc-200 transition
-                       hover:border-white/30 hover:text-white hover:[filter:drop-shadow(0_0_8px_var(--neon-pink))]"
-                        >
-                            <span className="opacity-80">Code Review</span>
-                        </Link>
+                    {/* スタート＆レビューへの導線（shadcn/uiボタン・縦並び） */}
+                    <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-xs mx-auto">
+                        <div className="w-full rounded-xl bg-black/70 p-4 flex justify-center">
+                            <Link to="/game">
+                                <Button variant="default" size="lg" className="text-lg min-w-[180px]">
+                                    ▶ Start Game
+                                </Button>
+                            </Link>
+                        </div>
+                        <div className="w-full rounded-xl bg-black/70 p-4 flex justify-center">
+                            <Link to="/review">
+                                <Button variant="secondary" size="lg" className="text-lg min-w-[180px]">
+                                    Code Review
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
