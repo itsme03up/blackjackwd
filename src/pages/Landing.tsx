@@ -4,32 +4,32 @@ import { Button } from '../components/ui/button'
 export default function Landing() {
     return (
         <main className="relative mx-auto grid min-h-dvh place-items-center px-6">
-           <div className="relative min-h-dvh flex items-center justify-center bg-zinc-950 overflow-hidden">
-  {/* 三本の縦線：アディダス風（全高） */}
-  <div
-    className="
+            <div className="relative min-h-dvh flex items-center justify-center bg-zinc-950 overflow-hidden">
+                {/* 三本の縦線：アディダス風（全高） */}
+                <div
+                    className="
       pointer-events-none absolute inset-0 z-0
       flex justify-center
     "
-  >
-    {/* 中央グループ */}
-    <div
-      className="
+                >
+                    {/* 中央グループ */}
+                    <div
+                        className="
         h-dvh flex items-stretch
         [gap:var(--stripe-gap)]
       "
-      style={{
-        // 太さ・間隔一括調整できる
-        // 例: 幅 6px / 間隔 10px（モバイル）, 幅 10px / 間隔 16px（PC）
-        ['--stripe-w' as any]: '24px',
-        ['--stripe-gap' as any]: '30px',
-      }}
-    >
-      <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
-      <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_14px_var(--neon-pink)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
-      <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
-    </div>
-  </div>
+                        style={{
+                            // 太さ・間隔一括調整できる
+                            // 例: 幅 6px / 間隔 10px（モバイル）, 幅 10px / 間隔 16px（PC）
+                            ['--stripe-w' as any]: '24px',
+                            ['--stripe-gap' as any]: '30px',
+                        }}
+                    >
+                        <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
+                        <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_14px_var(--neon-pink)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
+                        <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
+                    </div>
+                </div>
                 {/* 中央タイトル */}
                 <div className="text-center">
                     <div className="flex flex-col items-center justify-center gap-2 relative">
@@ -38,7 +38,7 @@ export default function Landing() {
                         </div>
                         <img
                             src="/images/gopnikwd.png"
-                            alt="gopnikwd"  
+                            alt="gopnikwd"
                             className="absolute left-1/2 top-0 -translate-x-1/2 z-30 w-[180px] h-[180px] object-contain drop-shadow-lg"
                             style={{ pointerEvents: 'none' }}
                         />
@@ -61,27 +61,40 @@ export default function Landing() {
                         <div className="h-[3px] bg-white/90" />
                     </div>
 
-                    {/* サブコピー */}
+                    {/* サブコピー
                     <p className="mt-6 text-zinc-400">
                         漆黒に走る三本線。選ぶのは、ヒットか、スタンドか。
-                    </p>
+                    </p> */}
 
                     {/* スタート＆レビューへの導線（shadcn/uiボタン・縦並び） */}
-                    <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-xs mx-auto relative z-50">
-                        <div className="w-full rounded-xl bg-black/70 p-4 flex justify-center">
-                            <Link to="/game">
-                                <Button variant="default" size="lg" className="text-lg min-w-[180px]">
-                                    ▶ Start Game
-                                </Button>
-                            </Link>
-                        </div>
-                        <div className="w-full rounded-xl bg-black/70 p-4 flex justify-center">
-                            <Link to="/review">
-                                <Button variant="secondary" size="lg" className="text-lg min-w-[180px]">
-                                    Code Review
-                                </Button>
-                            </Link>
-                        </div>
+                    <div className="
+  mt-10 mx-auto
+  grid gap-5           /* ← 隙間は grid の gap で確実に */
+  justify-items-center /* ← 中央揃え */
+  w-full max-w-md      /* ← 幅はここで制御（~768px） */
+  relative z-50
+">
+                        {/* 1個目 */}
+                        <Link to="/game" className="block w-[min(320px,90vw)]">
+                            <Button
+                                variant="default"
+                                size="lg"
+                                className="neon-btn shadow-lg text-lg w-full"
+                            >
+                                ▶ Start Game
+                            </Button>
+                        </Link>
+
+                        {/* 2個目 */}
+                        <Link to="/review" className="block w-[min(320px,90vw)]">
+                            <Button
+                                variant="secondary"
+                                size="lg"
+                                className="neon-btn shadow-lg text-lg w-full"
+                            >
+                                Code Review
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import './index.css'
 import Landing from './pages/Landing'
 import Game from './pages/Game'
 import Review from './pages/Review'
+import './App.css' 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

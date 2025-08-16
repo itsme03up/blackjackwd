@@ -28,7 +28,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
     <div
       className="w-[var(--card-w)] h-[var(--card-h)] aspect-[5/7] max-w-[var(--card-w)] max-h-[var(--card-h)] shrink-0 grow-0 basis-auto overflow-hidden rounded-[12px] ring-1 ring-zinc-700/70 bg-zinc-900 drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)"
       style={{ willChange: 'transform', margin: '0.25rem' }}>
-      <div className="w-full h-full bg-white grid place-items-center rounded-[12px] aspect-[5/7]">
+      <div className="w-full h-full bg-white grid place-items-center rounded-[8px] aspect-[5/7]">
         <div className="w-full h-full bg-transparent flex items-center justify-center">
           {children}
         </div>
@@ -42,7 +42,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
         <img
           src={backImg}
           alt="card back"
-          className="w-full h-full object-contain select-none rounded-[12px] aspect-[5/7]"
+          className="w-full h-full object-contain select-none rounded-[8px] aspect-[5/7]"
           draggable={false}
           style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
         />
@@ -70,6 +70,18 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
 
   const color = suit === "♥" || suit === "♦" ? "text-rose-400" : "text-zinc-100";
 
+  // SVGのviewBoxから縦横比を取得する関数
+  function getAspectFromViewBox(viewBox?: string): string {
+    if (!viewBox) return "aspect-[5/7]";
+    const parts = viewBox.split(" ").map(Number);
+    if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
+      const w = parts[2], h = parts[3];
+      // 端数を丸めてaspect-[w/h]形式に
+      return `aspect-[${Math.round(w)}/${Math.round(h)}]`;
+    }
+    return "aspect-[5/7]";
+  }
+
   if (typeof CompOrUrl === "string") {
     // URLだった場合
     return (
@@ -77,7 +89,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
         <img
           src={CompOrUrl}
           alt={code}
-          className="w-full h-full object-contain rounded-[10px] aspect-[5/7]"
+          className={`w-full h-full object-contain rounded-[8px] ${"aspect-[5/7]"}`}
           style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
         />
       </Wrapper>
@@ -86,10 +98,17 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
 
   // Reactコンポーネントとして描画
   const Svg: React.FC<React.SVGProps<SVGSVGElement>> = CompOrUrl;
+  // viewBox取得とデバッグ
+  let viewBox = (Svg as any)?.type?.viewBox || (Svg as any)?.viewBox;
+  if (!viewBox && (Svg as any)?.props?.viewBox) {
+    viewBox = (Svg as any).props.viewBox;
+  }
+  console.log('CardSvg viewBox:', viewBox, 'code:', code);
+  const aspectClass = getAspectFromViewBox(viewBox);
   return (
     <Wrapper>
       <Svg
-        className={`w-full h-full ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] rounded-[10px] aspect-[5/7]`}
+        className={`w-full h-full ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] rounded-[8px] ${aspectClass}`}
         shapeRendering="geometricPrecision"
         preserveAspectRatio="xMidYMid meet"
       />
