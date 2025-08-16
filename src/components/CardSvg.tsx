@@ -10,14 +10,15 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   const Wrapper: React.FC<{children: React.ReactNode}> = ({ children }) => (
     <div
       className="
-        w-20 h-28            /* 64×96px 固定 */
+        w-[var(--card-w)] h-[var(--card-h)]
+        max-w-[var(--card-w)] max-h-[var(--card-h)]
         shrink-0 grow-0 basis-auto
         overflow-hidden rounded-md
         border border-zinc-700 bg-zinc-900
         grid place-items-center
-      "
+        "
       // 念のため直接スタイルでも固定（親が強くても勝てる）
-      style={{ width: "5rem", height: "7rem" }}
+    //   style={{ width: "5rem", height: "7rem" }}
     >
       {children}
     </div>

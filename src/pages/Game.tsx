@@ -103,7 +103,14 @@ export default function Game() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl p-6 text-center text-white">
+    <div
+      className="
+        mx-auto max-w-3xl p-6 text-center text-white
+        [--card-w:4rem]  [--card-h:6rem]      /* モバイル: 64×96 */
+        sm:[--card-w:5rem] sm:[--card-h:7rem] /* タブレット: 80×112 */
+        lg:[--card-w:6rem] lg:[--card-h:9rem] /* デスクトップ: 96×144 */
+      "
+    >
       <h1 className="text-2xl font-bold mb-4">ブラックジャック</h1>
 
       {/* ディーラー */}
