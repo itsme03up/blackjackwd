@@ -1,7 +1,7 @@
 // src/components/CardSvg.tsx
 import { type FC, memo } from 'react'
 
-// 例: "AH" / "TD" / "KS"
+// 例:"ace_of_hearts"
 type Props = { code: string; suit: '♥'|'♦'|'♣'|'♠'; back?: boolean }
 
 // 動的 import（SVGR）: /src/assets/cards/{code}.svg を ReactComponent として読み込み
@@ -11,12 +11,14 @@ const cardModules = import.meta.glob('@/assets/cards/*.svg', { eager: true })
 export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   if (back) {
     return (
-      <img
-        src="/image/card.png"
-        alt="card back"
-        className="w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 object-contain"
-        draggable={false}
-      />
+      <div className="w-16 h-24 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center">
+        <img
+          src="/image/card.png"
+          alt="card back"
+          className="!w-full !h-full object-contain rounded-md"
+          draggable={false}
+        />
+      </div>
     )
   }
 
@@ -36,9 +38,8 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
 
   const Svg = mod.default
   return (
-    <div className={`w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
-      {/* SVG内の fill/stroke="currentColor" が外側の text-* に同期 */}
-      <Svg className="w-[90%] h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
+    <div className={`w-16 h-24 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
+      <Svg className="!w-[90%] !h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
     </div>
   )
 })

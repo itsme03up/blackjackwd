@@ -144,4 +144,63 @@ const toCode = (rank: string, suit: '♥'|'♦'|'♣'|'♠') => {
 
 でも、これ……仕上がったら、マジで気持ちいいやつです。
 
-ああ〜！！！
+ああ〜！！！早く気持ち良くなりたい！！！
+
+そして発覚するカードの画像デカすぎ問題
+画像のサイズ指定が勝ててないです。
+Tailwindの preflight が img { max-width:100%; height:auto; } を入れるので、状況によっては w-16 h-24 が効かず実寸（1026×1538）で出てしまうことがあるんですね。
+
+直し方（確実版）
+
+固定サイズのラッパーを用意して、画像は w-full h-full object-contain にします
+
+念のため !important で上書き（Tailwindの ! プレフィックス）
+
+伸びないように shrink-0
+
+src/components/CardSvg.tsx（背面の箇所だけ入れ替え）
+// 旧:
+{/* back のとき */}
+<img
+  src={backImg}
+  alt="card back"
+  className="w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 object-contain"
+  draggable={false}
+/>
+
+// 新:
+<div className="w-16 h-24 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center">
+  <img
+    src={backImg}
+    alt="card back"
+    className="!w-full !h-full object-contain rounded-md"
+    draggable={false}
+  />
+</div>
+
+SVG側も同じ考え方（念のため）
+// 旧:
+return (
+  <div className={`w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
+    <Svg className="w-[90%] h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
+  </div>
+)
+
+// 新: （サイズを強制・縮まない）
+return (
+  <div className={`w-16 h-24 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
+    <Svg className="!w-[90%] !h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
+  </div>
+)
+
+追加チェック（どれか当てはまっても今回の修正で解決します）
+
+親が flex / grid で伸ばしている → shrink-0 で防止
+
+img { height:auto } が勝っている → !h-full で上書き
+
+max-width:100% の影響 → ラッパーで w-16 を固定し、内側は w-full
+
+これで**必ず 64×96px（w-16 h-24）**のサイズに収まるはずでした。
+
+ああーーーーー助けてーーーー！！！

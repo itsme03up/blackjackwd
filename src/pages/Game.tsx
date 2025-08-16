@@ -1,6 +1,7 @@
 // src/components/Game.tsx
 import { useState } from "react";
 import { CardSvg } from "../components/CardSvg";
+import { cardCode } from "../lib/cardCode";
 
 type Card = {
   suit: "♥" | "♦" | "♣" | "♠";
@@ -81,11 +82,13 @@ export default function Game() {
   const stand = () => {
     setHideDealerHole(false);
     const dealer = [...dealerHand];
-    while (handValue(dealer) < 17) {
-      const [card, ...rest] = deck;
-      dealer.push(card);
-      setDeck(rest);
+    const currentDeck = [...deck];
+    let idx = 0;
+    while (handValue(dealer) < 17 && idx < currentDeck.length) {
+      dealer.push(currentDeck[idx]);
+      idx++;
     }
+    setDeck(currentDeck.slice(idx));
     setDealerHand(dealer);
 
     const playerVal = handValue(playerHand);
@@ -110,7 +113,7 @@ export default function Game() {
           {dealerHand.map((c, i) => (
             <CardSvg
               key={i}
-              code={`${c.rank}${c.suit}`}   // 例: "A♥"
+              code={cardCode(c.rank, c.suit)}
               suit={c.suit}
               back={hideDealerHole && i === 1}
             />
@@ -128,7 +131,7 @@ export default function Game() {
           {playerHand.map((c, i) => (
             <CardSvg
               key={i}
-              code={`${c.rank}${c.suit}`}
+              code={cardCode(c.rank, c.suit)}
               suit={c.suit}
             />
           ))}
