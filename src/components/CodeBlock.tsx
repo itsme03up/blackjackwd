@@ -1,6 +1,6 @@
 // src/components/CodeBlock.tsx
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
+import oneDark  from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 
 
 export function CodeBlock({ code, lang = 'txt' }: { code: string; lang?: string }) {

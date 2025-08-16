@@ -60,5 +60,18 @@ npm run dev
 
 ---
 
-🗓️ 最終更新日：2025-08-15
+
+## �️ 主な追加・変更履歴（2025-08-17時点）
+
+- C言語ブラックジャックの全コードをTypeScript/JavaScriptと比較できる「レビュー」ページ追加
+- shadcn/ui Tabsコンポーネント導入（技術比較やコード切り替えに使用）
+- react-syntax-highlighter導入（コードブロックのシンタックスハイライト）
+- Vite依存キャッシュのエラー対策方法をREADMEに記載
+
+## ⚠️ 開発Tips
+
+- Viteで依存エラーやキャッシュ不整合が出た場合は `node_modules/.vite` を削除して再起動
+- `react-syntax-highlighter` のスタイルは `one-dark` などを利用
+
+�🗓️ 最終更新日：2025-08-17
 

@@ -39,7 +39,7 @@ export default function Landing() {
                         <img
                             src="/images/gopnikwd.png"
                             alt="gopnikwd"
-                            className="absolute left-1/2 top-0 -translate-x-1/2 z-30 w-[180px] h-[180px] object-contain drop-shadow-lg"
+                            className="absolute left-1/2 top-0 -translate-x-1/2 z-30 w-[220px] h-[220px] object-contain drop-shadow-lg"
                             style={{ pointerEvents: 'none' }}
                         />
                         <h1

@@ -6,6 +6,7 @@ import { CardSvg } from "@/components/CardSvg";
 import { cardCode } from "@/lib/cardCode";
 import { Button } from "@/components/ui/button";
 import { Scoreboard } from "@/components/Scoreboard";
+import Navbar from "@/components/Navbar";
 
 type Suit = "♥" | "♦" | "♣" | "♠";
 type Card = { suit: Suit; rank: string; value: number };
@@ -82,6 +83,7 @@ export default function Game() {
 
     return (
         <>
+            <Navbar />
             <div
                 className="
             relative mx-auto max-w-3xl p-6 text-white text-center
