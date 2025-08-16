@@ -77,7 +77,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
         <img
           src={CompOrUrl}
           alt={code}
-          className="w-full h-full object-contain rounded-[12px] aspect-[5/7]"
+          className="w-full h-full object-contain rounded-[10px] aspect-[5/7]"
           style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
         />
       </Wrapper>
@@ -89,7 +89,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   return (
     <Wrapper>
       <Svg
-        className={`w-full h-full ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] rounded-[12px] aspect-[5/7]`}
+        className={`w-full h-full ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] rounded-[10px] aspect-[5/7]`}
         shapeRendering="geometricPrecision"
         preserveAspectRatio="xMidYMid meet"
       />
