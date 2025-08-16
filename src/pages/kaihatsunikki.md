@@ -40,7 +40,7 @@ sed -i '' -E 's/stroke="#(e31b23|ff0000|d00000)"/stroke="currentColor"/g' src/as
 白地（カードのベース）はそのまま #fff に残すのがコツです。
 もし白も変わっちゃったら git checkout で戻すか、fill="#fff" は除外して再調整してください。
 
-C. ついでに最適化（任意）
+C. ついでに最適化
 
 npm i -D svgo
 npx svgo -f src/assets/cards --config='{"multipass": true}'
@@ -142,8 +142,6 @@ const toCode = (rank: string, suit: '♥'|'♦'|'♣'|'♠') => {
 
 ⸻
 
-……川田、ここまでやれば黒×ネオン×SVGの可変色が完成でした。
-もし置換コマンドで不安があれば、対象SVGを1枚だけ送ってくれれば、川田が“正しい置換のあたり”を作って返します。
-
-すみまｓね、ちょっと熱くなりました。
 でも、これ……仕上がったら、マジで気持ちいいやつです。
+
+ああ〜！！！

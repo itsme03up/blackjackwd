@@ -3,7 +3,6 @@ import { type FC, memo } from 'react'
 
 // 例: "AH" / "TD" / "KS"
 type Props = { code: string; suit: '♥'|'♦'|'♣'|'♠'; back?: boolean }
-import backImg from '@/image/card.png'
 
 // 動的 import（SVGR）: /src/assets/cards/{code}.svg を ReactComponent として読み込み
 // Vite の import.meta.glob を使うと綺麗にいけます
@@ -13,8 +12,8 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   if (back) {
     return (
       <img
-        src={backImg}
-        alt="card-back"
+        src="/images/card.png"
+        alt="card back"
         className="w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 object-contain"
         draggable={false}
       />
