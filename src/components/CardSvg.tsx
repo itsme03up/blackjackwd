@@ -23,18 +23,16 @@ for (const [path, mod] of Object.entries({ ...rawModules, ...rawModulesComponent
 // }
 
 export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
+  // 二重枠ラッパー
   const Wrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
     <div
-      className="
-        w-[var(--card-w)] h-[var(--card-h)]
-        max-w-[var(--card-w)] max-h-[var(--card-h)]
-        shrink-0 grow-0 basis-auto
-        overflow-hidden rounded-md
-        border border-zinc-700 bg-zinc-900
-        grid place-items-center
-      "
-    >
-      {children}
+      className="w-[var(--card-w)] h-[var(--card-h)] aspect-[5/7] max-w-[var(--card-w)] max-h-[var(--card-h)] shrink-0 grow-0 basis-auto overflow-hidden rounded-[12px] ring-1 ring-zinc-700/70 bg-zinc-900 drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)"
+      style={{ willChange: 'transform', margin: '0.25rem' }}>
+      <div className="w-full h-full bg-white grid place-items-center rounded-[12px] aspect-[5/7]">
+        <div className="w-full h-full bg-transparent flex items-center justify-center">
+          {children}
+        </div>
+      </div>
     </div>
   );
 
@@ -44,8 +42,9 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
         <img
           src={backImg}
           alt="card back"
-          className="!w-full !h-full object-contain select-none"
+          className="w-full h-full object-contain select-none rounded-[12px] aspect-[5/7]"
           draggable={false}
+          style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
         />
       </Wrapper>
     );
@@ -75,7 +74,12 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
     // URLだった場合
     return (
       <Wrapper>
-        <img src={CompOrUrl} alt={code} className="!w-full !h-full object-contain" />
+        <img
+          src={CompOrUrl}
+          alt={code}
+          className="w-full h-full object-contain rounded-[12px] aspect-[5/7]"
+          style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
+        />
       </Wrapper>
     );
   }
@@ -84,7 +88,11 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   const Svg: React.FC<React.SVGProps<SVGSVGElement>> = CompOrUrl;
   return (
     <Wrapper>
-      <Svg className={`!w-[90%] !h-[90%] ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`} />
+      <Svg
+        className={`w-full h-full ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] rounded-[12px] aspect-[5/7]`}
+        shapeRendering="geometricPrecision"
+        preserveAspectRatio="xMidYMid meet"
+      />
     </Wrapper>
   );
 });
