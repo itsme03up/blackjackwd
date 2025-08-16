@@ -180,14 +180,14 @@ export default function Game() {
       </div>
 
       {/* 操作ボタン */}
-      <div className="space-x-3">
-        <button onClick={startGame} className="px-4 py-2 bg-green-600 rounded" disabled={!hideDealerHole && !gameOver}>
+      <div className="space-x-3 mt-4 flex justify-center items-center gap-6">
+        <button onClick={startGame} className="neon-btn shadow-lg" disabled={!hideDealerHole && !gameOver}>
           スタート
         </button>
-        <button onClick={hit} className="px-4 py-2 bg-blue-600 rounded" disabled={gameOver || !hideDealerHole}>
+        <button onClick={hit} className="neon-btn shadow-lg" disabled={gameOver || !hideDealerHole}>
           ヒット
         </button>
-        <button onClick={stand} className="px-4 py-2 bg-red-600 rounded" disabled={gameOver || !hideDealerHole}>
+        <button onClick={stand} className="neon-btn shadow-lg" disabled={gameOver || !hideDealerHole}>
           スタンド
         </button>
       </div>
