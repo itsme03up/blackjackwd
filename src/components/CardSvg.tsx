@@ -6,21 +6,23 @@ import backImg from '/images/card.png'
 const cardModules = import.meta.glob('@/assets/cards/*.svg', { eager: true })
 
 export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
-  // ① ラッパーで“サイズを固定”して、伸びを完全に止める
+  // ラッパーで“サイズを固定”して、伸びを完全に止める
   const Wrapper: React.FC<{children: React.ReactNode}> = ({ children }) => (
     <div
       className="
-        w-16 h-24               /* 64×96px に固定 */
+        w-16 h-24            /* 64×96px 固定 */
         shrink-0 grow-0 basis-auto
         overflow-hidden rounded-md
         border border-zinc-700 bg-zinc-900
         grid place-items-center
       "
+      // 念のため直接スタイルでも固定（親が強くても勝てる）
+      style={{ width: "4rem", height: "6rem" }}
     >
       {children}
     </div>
   )
-
+ /** 背面表示 */
   if (back) {
     return (
       <Wrapper>
@@ -33,9 +35,10 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
       </Wrapper>
     )
   }
-
+ /** 表面SVGの解決 */
   const path = `/src/assets/cards/${code}.svg`
-  const mod = cardModules[path] as { default: React.FC<React.SVGProps<SVGSVGElement>> } | undefined
+  const mod = cardModules[path] as
+   { default: React.FC<React.SVGProps<SVGSVGElement>> } | undefined
 
   if (!mod) {
     return (
@@ -44,7 +47,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
       </Wrapper>
     )
   }
-
+ /** ♥/♦ はピンク、♣/♠ は白系（SVG内は fill/stroke="currentColor" 前提） */
   const color = suit === '♥' || suit === '♦' ? 'text-rose-400' : 'text-zinc-100'
   const Svg = mod.default
 
