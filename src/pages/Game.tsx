@@ -109,7 +109,8 @@ export default function Game() {
       {/* ディーラー */}
       <div className="mb-6">
         <h2 className="mb-2">ディーラー</h2>
-        <div className="flex justify-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2 content-start">
+          {/* items-centerで縦方向の伸びを防止content-start は複数行になった時の行揃え */}
           {dealerHand.map((c, i) => (
             <CardSvg
               key={i}

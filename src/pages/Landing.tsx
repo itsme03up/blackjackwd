@@ -37,8 +37,8 @@ export default function Landing() {
                             <div className="w-full h-full rounded-full bg-white/80 blur-[60px]" />
                         </div>
                         <img
-                            src="/image/gopnikwd.png"
-                            alt="gopnikwd"
+                            src="/images/gopnikwd.png"
+                            alt="gopnikwd"  
                             className="absolute left-1/2 top-0 -translate-x-1/2 z-30 w-[180px] h-[180px] object-contain drop-shadow-lg"
                             style={{ pointerEvents: 'none' }}
                         />
