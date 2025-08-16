@@ -1,7 +1,65 @@
+// src/pages/Review.tsx （骨子だけ差分）
+import { CodeTabs } from "@/components/CodeTabs";
+import { Callout } from "@/components/Callout";
+import { DiffBlock } from "@/components/DiffBlock";
+import { ReviewTOC } from "@/components/ReviewTOC";
+
+export default function Review() {
+  const toc = [
+    { id: "struct", label: "カード情報の構造体" },
+    { id: "hand", label: "手札の合計値計算" },
+    { id: "deck", label: "デッキ生成＆シャッフル" },
+  ];
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 lg:grid lg:grid-cols-[1fr_260px] lg:gap-8">
+      <main className="py-8">
+        <h1 className="font-[Stalinist_One] text-4xl sm:text-5xl mb-8">C言語ブラックジャック実装のTypeScript比較・解説</h1>
+
+        {/* 1. 構造体 */}
+        <section id="struct" className="mb-12 scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-2">1. カード情報の構造体</h2>
+          <p className="text-zinc-300 mb-3">最小限の型で「表示名」と「計算値」を分けると後工程が楽です。</p>
+          <CodeTabs
+            items={[
+              { label: "C",  lang: "c",  code: `typedef struct { char* suit; char* rank; int value; } Card;` },
+              { label: "TS", lang: "ts", code: `type Card = { suit: string; rank: string; value: number };` },
+              { label: "JS", lang: "js", code: `/** @typedef {{suit:string,rank:string,value:number}} Card */` },
+            ]}
+          />
+          <Callout>
+            文字列の所有権（C）と、ユニコード絵文字/記号（TS/JS）の扱いが違います。UI表示用（♥︎/♦︎…）とロジック用（enum/数値）を分離するとバグが減りましたね。
+          </Callout>
+        </section>
+
+        {/* 2. 合計値計算（Diff例） */}
+        <section id="hand" className="mb-12 scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-2">2. 手札の合計値計算</h2>
+          <CodeTabs items={[ /* C/TS/JS の3タブを並べる */ ]} />
+          <DiffBlock diff={`- if (total > 21 && aces > 0) { total -= 10; aces--; }\n+ while (total > 21 && aces > 0) { total -= 10; aces--; }`} />
+          <Callout>TS/JS ではループで何枚でも A を調整可能に。テストを書いて境界値（A×4, 合計21越え）を保証しましょう。</Callout>
+        </section>
+
+        {/* 3. デッキ */}
+        <section id="deck" className="mb-12 scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-2">3. デッキ作成 & シャッフル</h2>
+          <CodeTabs items={[ /* ここもタブ */ ]} />
+          <Callout>シャッフルは Fisher–Yates 前提。乱数のシード（Cのrand）とJSのMath.randomの差は注記を。</Callout>
+        </section>
+      </main>
+
+      <aside className="pt-8">
+        <ReviewTOC items={toc} />
+      </aside>
+    </div>
+  );
+}
+
+
 export default function Review() {
   return (
     <div className="mx-auto max-w-5xl p-6">
-      <h1 className="text-2xl font-bold mb-4">C言語ブラックジャック実装のTypeScript比較・解説</h1>
+      <h1 className="text-2xl font-bold mb-4">C言語ブラックジャック実装言語別比較・解説</h1>
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">1. カード情報の構造体</h2>
         <p className="mb-2">C言語では構造体でカード情報をまとめます。TypeScriptでは型エイリアスで表現します。</p>
