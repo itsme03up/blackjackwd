@@ -67,15 +67,8 @@ export default function Landing() {
                     </p> */}
 
                     {/* スタート＆レビューへの導線（shadcn/uiボタン・縦並び） */}
-                    <div className="
-  mt-10 mx-auto
-  grid gap-5           /* ← 隙間は grid の gap で確実に */
-  justify-items-center /* ← 中央揃え */
-  w-full max-w-md      /* ← 幅はここで制御（~768px） */
-  relative z-50
-">
-                        {/* 1個目 */}
-                        <Link to="/game" className="block w-[min(320px,90vw)]">
+                    <div className="mt-10 flex flex-col items-center w-full max-w-[270px] mx-auto relative z-50">
+                        <Link to="/game" className="w-full">
                             <Button
                                 variant="default"
                                 size="lg"
@@ -84,9 +77,8 @@ export default function Landing() {
                                 ▶ Start Game
                             </Button>
                         </Link>
-
-                        {/* 2個目 */}
-                        <Link to="/review" className="block w-[min(320px,90vw)]">
+                        <div className="my-5" />
+                        <Link to="/review" className="w-full">
                             <Button
                                 variant="secondary"
                                 size="lg"

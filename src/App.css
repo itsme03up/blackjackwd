@@ -40,3 +40,34 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Neon Button Styles */
+.neon-btn {
+  position: relative;
+  color: #fff;
+  background: linear-gradient(90deg, #0ff 0%, #f0f 100%);
+  border: none;
+  border-radius: 12px;
+  box-shadow:
+    0 0 8px #0ff,
+    0 0 16px #f0f,
+    0 0 24px #0ff;
+  text-shadow:
+    0 0 4px #0ff,
+    0 0 8px #f0f;
+  font-weight: bold;
+  font-size: 1.15rem;
+  padding: 0.75em 2em;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  outline: none;
+}
+
+.neon-btn:hover,
+.neon-btn:focus {
+  box-shadow:
+    0 0 16px #0ff,
+    0 0 32px #f0f,
+    0 0 48px #0ff;
+  transform: scale(1.05);
+}
