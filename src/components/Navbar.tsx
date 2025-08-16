@@ -58,7 +58,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 w-full flex items-center justify-between border-b border-zinc-800 bg-zinc-900 z-50 m-0 p-0">
       {/* 左：ロゴ＋ナビリンク */}
       <div className="flex items-center gap-6">
-        <span className="text-2xl font-extrabold tracking-wide text-black">BlackJacKWD</span>
+  <h1 className="m-0 text-2xl font-extrabold tracking-wide text-black">BlackJacKWD</h1>
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>

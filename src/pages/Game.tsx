@@ -5,7 +5,7 @@ import { CardSvg } from "@/components/CardSvg";
 import { cardCode } from "@/lib/cardCode";
 import { Button } from "@/components/ui/button";
 import { Scoreboard } from "@/components/Scoreboard";
-import Navbar from "@/components/Navbar";
+import Layout from "@/components/layout";
 
 type Suit = "♥" | "♦" | "♣" | "♠";
 type Card = { suit: Suit; rank: string; value: number };
@@ -81,12 +81,10 @@ export default function Game() {
     };
 
     return (
-        <>
-            <Navbar />
+        <Layout>
             <div
                 className="
             relative mx-auto max-w-3xl p-6 text-white text-center
-            /* カードの標準サイズを CSS 変数で強制 */
             [--card-w:4.2rem] [--card-h:6.2rem]
             sm:[--card-w:5rem] sm:[--card-h:7.4rem]
             lg:[--card-w:5.8rem] lg:[--card-h:8.8rem]
@@ -160,6 +158,6 @@ export default function Game() {
                     <div className="h-[env(safe-area-inset-bottom)]" />
                 </div>
             </div>
-        </>
+        </Layout>
     );
 }
