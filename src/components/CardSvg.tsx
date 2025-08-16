@@ -3,7 +3,7 @@ import { type FC, memo } from 'react'
 type Props = { code: string; suit: '♥'|'♦'|'♣'|'♠'; back?: boolean }
 import backImg from '/images/card.png' 
 
-const cardModules = import.meta.glob('@/assets/cards/*.svg', { eager: true })
+const cardModules = import.meta.glob('@/assets/cards/*.svg?component', { eager: true });
 
 export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   // ラッパーで“サイズを固定”して、伸びを完全に止める
@@ -38,8 +38,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   }
  /** 表面SVGの解決 */
   const path = `/src/assets/cards/${code}.svg`
-  const mod = cardModules[path] as
-   { default: React.FC<React.SVGProps<SVGSVGElement>> } | undefined
+  const mod = cardModules[path] as { default: React.FC<React.SVGProps<SVGSVGElement>> } | undefined;
 
   if (!mod) {
     return (
@@ -50,12 +49,16 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   }
  /** ♥/♦ はピンク、♣/♠ は白系（SVG内は fill/stroke="currentColor" 前提） */
   const color = suit === '♥' || suit === '♦' ? 'text-rose-400' : 'text-zinc-100'
-  const Svg = mod.default
+  const Svg = cardModules[path] as React.FC<React.SVGProps<SVGSVGElement>> | undefined;
 
   return (
     <Wrapper>
       {/* SVGは外側の text-* に追従（currentColor） */}
-      <Svg className={`!w-[90%] !h-[90%] ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`} />
+      {Svg ? (
+        <Svg className={`!w-[90%] !h-[90%] ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`} />
+      ) : (
+        <span className="text-[10px] text-zinc-400">{code}</span>
+      )}
     </Wrapper>
   )
 })
