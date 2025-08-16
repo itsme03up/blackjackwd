@@ -36,6 +36,8 @@ blackjack-gopnik-style/
 - **SVGアニメーション（カードやUIエフェクト）**
 - **AI生成画像　ChatGPT**
 - **AI生成BGM suno**
+- **Google Code https://code.google.com/archive/p/vector-playing-cards/downloads**
+
 
 ## 🎮 ページ構成
 
