@@ -12,7 +12,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   if (back) {
     return (
       <img
-        src="/images/card.png"
+        src="/image/card.png"
         alt="card back"
         className="w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 object-contain"
         draggable={false}

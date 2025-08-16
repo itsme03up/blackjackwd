@@ -1,9 +1,8 @@
 // src/components/CardImg.tsx
 type Props = { code: string; back?: boolean }; // 例: "AS" (Ace of Spades)
-import backImg from '../image/card.png';
 
 export default function CardImg({ code, back }: Props) {
-  const src = back ? backImg : `/cards/${code}.svg`; // public/cards に置いた前提
+  const src = back ? '/image/card.png' : `/cards/${code}.svg`; // public/cards に置いた前提
   return (
     <img
       src={src}

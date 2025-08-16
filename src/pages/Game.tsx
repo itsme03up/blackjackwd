@@ -80,7 +80,7 @@ export default function Game() {
   // スタンド
   const stand = () => {
     setHideDealerHole(false);
-    let dealer = [...dealerHand];
+    const dealer = [...dealerHand];
     while (handValue(dealer) < 17) {
       const [card, ...rest] = deck;
       dealer.push(card);
@@ -150,7 +150,6 @@ export default function Game() {
       </div>
 
       {message && <p className="mt-4 text-xl">{message}</p>}
-      <img src="/images/card.png" alt="card back" />
     </div>
   );
 }
