@@ -1,7 +1,6 @@
 // src/components/Game.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Home } from "lucide-react";
 import { CardSvg } from "@/components/CardSvg";
 import { cardCode } from "@/lib/cardCode";
 import { Button } from "@/components/ui/button";
@@ -161,14 +160,6 @@ export default function Game() {
                     <div className="h-[env(safe-area-inset-bottom)]" />
                 </div>
             </div>
-            {/* 右下にホームアイコンボタン（body基準で表示） */}
-            <button
-                onClick={() => navigate('/')}
-                className="fixed bottom-4 right-4 z-[9999] bg-black border-2 border-yellow-400 rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:bg-yellow-400/80 transition-colors pointer-events-auto"
-                aria-label="ホームに戻る"
-            >
-                <Home size={36} color="#FFD700" />
-            </button>
         </>
     );
 }
