@@ -1,13 +1,29 @@
 // src/components/CardSvg.tsx
-import { type FC, memo } from 'react'
-type Props = { code: string; suit: '♥'|'♦'|'♣'|'♠'; back?: boolean }
-import backImg from '/images/card.png' 
+import { memo, type FC } from "react";
 
-const cardModules = import.meta.glob('@/assets/cards/*.svg?component', { eager: true });
+type Props = { code: string; suit: "♥" | "♦" | "♣" | "♠"; back?: boolean };
+
+// 背面は public/images/card.png
+const backImg = "/images/card.png";
+
+// 1) まとめ取り（?component 付いてても付いてなくてもOK）
+const rawModules = import.meta.glob('/src/assets/cards/*.svg', { eager: true });
+const rawModulesComponent = import.meta.glob('/src/assets/cards/*.svg?component', { eager: true });
+
+// 2) ファイル名（拡張子なし）→ モジュール で引けるようマップ化
+type AnyMod = any;
+const map: Record<string, AnyMod> = {};
+for (const [path, mod] of Object.entries({ ...rawModules, ...rawModulesComponent })) {
+  const file = path.split("/").pop()!;         // "ace_of_spades.svg?component" も来る
+  const base = file.replace(/\.svg(\?component)?$/, ""); // → "ace_of_spades"
+  map[base] = mod;
+}
+// if (import.meta.env.DEV) {
+//   console.log('cards loaded:', Object.keys(map).slice(0, 8))
+// }
 
 export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
-  // ラッパーで“サイズを固定”して、伸びを完全に止める
-  const Wrapper: React.FC<{children: React.ReactNode}> = ({ children }) => (
+  const Wrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
     <div
       className="
         w-[var(--card-w)] h-[var(--card-h)]
@@ -16,14 +32,12 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
         overflow-hidden rounded-md
         border border-zinc-700 bg-zinc-900
         grid place-items-center
-        "
-      // 念のため直接スタイルでも固定（親が強くても勝てる）
-    //   style={{ width: "5rem", height: "7rem" }}
+      "
     >
       {children}
     </div>
-  )
- /** 背面表示 */
+  );
+
   if (back) {
     return (
       <Wrapper>
@@ -34,31 +48,43 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
           draggable={false}
         />
       </Wrapper>
-    )
+    );
   }
- /** 表面SVGの解決 */
-  const path = `/src/assets/cards/${code}.svg`
-  const mod = cardModules[path] as { default: React.FC<React.SVGProps<SVGSVGElement>> } | undefined;
+
+  // 3) ファイル名ベースで取得（例: "ace_of_spades"）
+  const mod = map[code];
 
   if (!mod) {
+    // 見つからないときはファイル一覧を確認したい時用：必要なら console.log(Object.keys(map))
     return (
       <Wrapper>
         <span className="text-[10px] text-zinc-400">{code}</span>
       </Wrapper>
-    )
+    );
   }
- /** ♥/♦ はピンク、♣/♠ は白系（SVG内は fill/stroke="currentColor" 前提） */
-  const color = suit === '♥' || suit === '♦' ? 'text-rose-400' : 'text-zinc-100'
-  const Svg = cardModules[path] as React.FC<React.SVGProps<SVGSVGElement>> | undefined;
 
+  // 4) 取りうるパターンを吸収
+  //   a) Reactコンポーネントが default に入っている
+  //   b) 文字列URL（<img src> 用）
+  //   c) そのまま関数（コンポーネント）として返る
+  const CompOrUrl = (mod as any).default ?? mod;
+
+  const color = suit === "♥" || suit === "♦" ? "text-rose-400" : "text-zinc-100";
+
+  if (typeof CompOrUrl === "string") {
+    // URLだった場合
+    return (
+      <Wrapper>
+        <img src={CompOrUrl} alt={code} className="!w-full !h-full object-contain" />
+      </Wrapper>
+    );
+  }
+
+  // Reactコンポーネントとして描画
+  const Svg: React.FC<React.SVGProps<SVGSVGElement>> = CompOrUrl;
   return (
     <Wrapper>
-      {/* SVGは外側の text-* に追従（currentColor） */}
-      {Svg ? (
-        <Svg className={`!w-[90%] !h-[90%] ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`} />
-      ) : (
-        <span className="text-[10px] text-zinc-400">{code}</span>
-      )}
+      <Svg className={`!w-[90%] !h-[90%] ${color} drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`} />
     </Wrapper>
-  )
-})
+  );
+});
