@@ -44,17 +44,18 @@
 /* Neon Button Styles */
 .neon-btn {
   position: relative;
+  z-index: 1;
   color: #fff;
   background: linear-gradient(90deg, #0ff 0%, #f0f 100%);
   border: none;
-  border-radius: 12px;
+  border-radius:0.75rem;
   box-shadow:
-    0 0 8px #0ff,
-    0 0 16px #f0f,
-    0 0 24px #0ff;
+    0 0 2px #0ff,
+    0 0 8px #f0f,
+    0 0 12px #0ff;
   text-shadow:
-    0 0 4px #0ff,
-    0 0 8px #f0f;
+    0 0 2px #0ff,
+    0 0 4px #f0f;
   font-weight: bold;
   font-size: 1.15rem;
   padding: 0.75em 2em;
@@ -70,4 +71,22 @@
     0 0 32px #f0f,
     0 0 48px #0ff;
   transform: scale(1.05);
+}
+.neon-wrap{
+  position: relative;
+  border-radius:0.75rem;
+  overflow: hidden;                /* 発光を内側に閉じ込める */
+  isolation: isolate;
+}
+.neon-wrap::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background: radial-gradient(120% 120% at 50% 20%,
+              rgba(45,212,191,.35), rgba(45,212,191,0) 60%);
+  filter: blur(10px);
+  transform: scale(1.06);
+  z-index:0;
+  pointer-events:none;
 }

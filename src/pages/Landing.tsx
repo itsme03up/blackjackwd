@@ -67,27 +67,29 @@ export default function Landing() {
                     </p> */}
 
                     {/* スタート＆レビューへの導線（shadcn/uiボタン・縦並び） */}
-                    <div className="mt-10 flex flex-col items-center w-full max-w-[270px] mx-auto relative z-50">
+
+                    <div className="mt-10 grid gap-6 justify-items-center w-full max-w-[270px] mx-auto relative z-50">
                         <Link to="/game" className="w-full">
                             <Button
                                 variant="default"
                                 size="lg"
-                                className="neon-btn shadow-lg text-lg w-full"
+                                className="neon-btn text-lg w-full" style={{ margin: '0.5em 0', padding: '0.75em 2em' }}
                             >
                                 ▶ Start Game
                             </Button>
                         </Link>
-                        <div className="my-5" />
+
                         <Link to="/review" className="w-full">
                             <Button
                                 variant="secondary"
                                 size="lg"
-                                className="neon-btn shadow-lg text-lg w-full"
+                                className="neon-btn text-lg w-full" style={{ margin: '0.5em 0', padding: '0.75em 2em' }}
                             >
                                 Code Review
                             </Button>
                         </Link>
                     </div>
+
                 </div>
             </div>
         </main>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { CardSvg } from "../components/CardSvg";
 import { cardCode } from "../lib/cardCode";
+import { Button } from "../components/ui/button";
 
 type Card = {
   suit: "♥" | "♦" | "♣" | "♠";
@@ -179,18 +180,18 @@ export default function Game() {
         <p className="mt-2">合計: {handValue(playerHand)}</p>
       </div>
 
-      {/* 操作ボタン */}
-      <div className="space-x-3 mt-4 flex justify-center items-center gap-6">
-        <button onClick={startGame} className="neon-btn shadow-lg" disabled={!hideDealerHole && !gameOver}>
-          スタート
-        </button>
-        <button onClick={hit} className="neon-btn shadow-lg" disabled={gameOver || !hideDealerHole}>
-          ヒット
-        </button>
-        <button onClick={stand} className="neon-btn shadow-lg" disabled={gameOver || !hideDealerHole}>
-          スタンド
-        </button>
-      </div>
+          {/* 操作ボタン */}
+          <div className="mt-6 grid grid-flow-col auto-cols-max gap-5 justify-center">
+              <div className="p-[2px]">
+                  <Button onClick={startGame} className="neon-btn shadow-lg w-28">スタート</Button>
+              </div>
+              <div className="p-[2px]">
+                  <Button onClick={hit} className="neon-btn shadow-lg w-28">ヒット</Button>
+              </div>
+              <div className="p-[2px]">
+                  <Button onClick={stand} className="neon-btn shadow-lg w-28">スタンド</Button>
+              </div>
+          </div>
 
       {message && <p className="mt-4 text-xl">{message}</p>}
       {gameOver && <p className="mt-4 text-2xl text-yellow-300">所持金がなくなりました。ゲーム終了です。</p>}
