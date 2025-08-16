@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CardSvg } from "../components/CardSvg";
 import { cardCode } from "../lib/cardCode";
 import { Button } from "../components/ui/button";
+import { Scoreboard } from "@/components/Scoreboard";
 
 type Card = {
   suit: "♥" | "♦" | "♣" | "♠";
@@ -135,17 +136,39 @@ export default function Game() {
   };
 
   return (
-    <div
-      className="mx-auto max-w-3xl p-6 text-center text-white [--card-w:4rem]  [--card-h:6rem] sm:[--card-w:5rem] sm:[--card-h:7rem] lg:[--card-w:6rem] lg:[--card-h:9rem]"
-    >
-      <h1 className="font-[Stalinist_One] text-[clamp(2.5rem,7vw,6rem)] tracking-wider text-white [animation:titleGlow_2.2s_ease-in-out_infinite] relative z-20" style={{ fontFamily: '"Stalinist One", sans-serif' }}>
+    <div className="relative mx-auto max-w-5xl p-6 text-white grid gap-8 lg:grid-cols-[1fr_280px] min-h-screen overflow-hidden">
+    {/* 左側画像 */}
+      <img
+        src="/images/kwbunny.png"
+        alt="kwbunny"
+        className="absolute top-[18%] left-[6%] z-20 w-auto max-h-[42vh] min-w-[120px] object-contain pointer-events-none select-none"
+      />
+    {/* メインカラム */}
+    <main className="text-center">
+
+      <h1 className="font-[Stalinist_One] text-[clamp(2rem,4.8vw,4rem)] tracking-wider text-white [animation:titleGlow_2.2s_ease-in-out_infinite] relative z-30" style={{ fontFamily: '"Stalinist One", sans-serif' }}>
         BLACKJACK
       </h1>
 
-      <div className="mb-4 text-lg">所持金: ${money}</div>
-      <div className="mb-4">
-        ベット額: <input type="number" min={1} max={money} value={bet} disabled={!hideDealerHole || gameOver} onChange={e => setBet(Math.max(1, Math.min(money, Number(e.target.value))))} className="w-20 px-2 py-1 rounded text-black" />
-      </div>
+      {/* <div className="mb-4 text-lg">所持金: ${money}</div>
+      <div className="mb-4 flex flex-col items-center">
+        <label htmlFor="bet-input" className="mb-1 text-lg">ベット額:</label>
+        <div className="flex justify-center items-center w-full">
+          <input
+            id="bet-input"
+            type="number"
+            min={1}
+            max={money}
+            value={bet}
+            disabled={!hideDealerHole || gameOver}
+            onChange={e => setBet(Math.max(1, Math.min(money, Number(e.target.value))))}
+            className="w-48 h-20 text-4xl px-6 py-4 rounded-2xl text-black border-4 border-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 shadow-2xl bg-white transition-all duration-200"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            style={{ maxWidth: '100%' }}
+          />
+        </div>
+      </div> */}
 
       {/* ディーラー */}
       <div className="mb-6">
@@ -195,6 +218,18 @@ export default function Game() {
 
       {message && <p className="mt-4 text-xl">{message}</p>}
       {gameOver && <p className="mt-4 text-2xl text-yellow-300">所持金がなくなりました。ゲーム終了です。</p>}
+     </main>
+    {/* 右サイド：スコアボード */}
+    <aside className="flex flex-col items-center justify-center h-full">
+      <Scoreboard
+        balance={money}
+        bet={bet}
+        min={1}
+        max={money}
+        onBetChange={(v) => setBet(v)}
+      />
+    </aside>
     </div>
+
   );
 }
