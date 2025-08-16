@@ -54,70 +54,102 @@ export default function Game() {
   const [dealerHand, setDealerHand] = useState<Card[]>([]);
   const [hideDealerHole, setHideDealerHole] = useState(true);
   const [message, setMessage] = useState("");
+  const [money, setMoney] = useState<number>(100);
+  const [bet, setBet] = useState<number>(10);
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   // カードを引く
-  const draw = (hand: Card[], setHand: (h: Card[]) => void) => {
-    if (deck.length === 0) return;
-    const [card, ...rest] = deck;
-    setDeck(rest);
+  const draw = (hand: Card[], setHand: (h: Card[]) => void, deckArr?: Card[], setDeckArr?: (d: Card[]) => void) => {
+    const d = deckArr ?? deck;
+    if (d.length === 0) return;
+    const [card, ...rest] = d;
+    if (setDeckArr) setDeckArr(rest);
+    else setDeck(rest);
     setHand([...hand, card]);
   };
 
   // 初期配布
   const startGame = () => {
+    if (money <= 0) {
+      setMessage("所持金がありません。ゲーム終了です。");
+      setGameOver(true);
+      return;
+    }
     const newDeck = shuffle(createDeck());
     setDeck(newDeck.slice(4));
     setPlayerHand([newDeck[0], newDeck[2]]);
     setDealerHand([newDeck[1], newDeck[3]]);
     setHideDealerHole(true);
     setMessage("");
+    setGameOver(false);
   };
 
   // ヒット
   const hit = () => {
+    if (gameOver || hideDealerHole === false) return;
     draw(playerHand, setPlayerHand);
+    setTimeout(() => {
+      const val = handValue([...playerHand, deck[0]]);
+      if (val > 21) {
+        setHideDealerHole(false);
+        setMessage("バースト！ディーラーの勝ちです。");
+        setMoney(money - bet);
+        if (money - bet <= 0) setGameOver(true);
+      }
+    }, 100);
   };
 
   // スタンド
   const stand = () => {
+    if (gameOver || hideDealerHole === false) return;
     setHideDealerHole(false);
-    const dealer = [...dealerHand];
-    const currentDeck = [...deck];
-    let idx = 0;
-    while (handValue(dealer) < 17 && idx < currentDeck.length) {
-      dealer.push(currentDeck[idx]);
-      idx++;
+    let dealer = [...dealerHand];
+    let currentDeck = [...deck];
+    while (handValue(dealer) < 17 && currentDeck.length > 0) {
+      dealer.push(currentDeck[0]);
+      currentDeck = currentDeck.slice(1);
     }
-    setDeck(currentDeck.slice(idx));
+    setDeck(currentDeck);
     setDealerHand(dealer);
 
     const playerVal = handValue(playerHand);
     const dealerVal = handValue(dealer);
-    if (dealerVal > 21 || playerVal > dealerVal) {
-      setMessage("プレイヤー勝利！");
+    let result = "";
+    let newMoney = money;
+    if (dealerVal > 21) {
+      result = "ディーラーはバースト！プレイヤーの勝ちです。";
+      newMoney += bet;
+    } else if (playerVal > dealerVal) {
+      result = "プレイヤーの勝ちです！";
+      newMoney += bet;
     } else if (playerVal < dealerVal) {
-      setMessage("ディーラー勝利！");
+      result = "ディーラーの勝ちです。";
+      newMoney -= bet;
     } else {
-      setMessage("引き分け！");
+      result = "引き分け！";
     }
+    setMessage(result);
+    setMoney(newMoney);
+    if (newMoney <= 0) setGameOver(true);
   };
 
   return (
     <div
-      className="
-        mx-auto max-w-3xl p-6 text-center text-white
-        [--card-w:4rem]  [--card-h:6rem]      /* モバイル: 64×96 */
-        sm:[--card-w:5rem] sm:[--card-h:7rem] /* タブレット: 80×112 */
-        lg:[--card-w:6rem] lg:[--card-h:9rem] /* デスクトップ: 96×144 */
-      "
+      className="mx-auto max-w-3xl p-6 text-center text-white [--card-w:4rem]  [--card-h:6rem] sm:[--card-w:5rem] sm:[--card-h:7rem] lg:[--card-w:6rem] lg:[--card-h:9rem]"
     >
-      <h1 className="text-2xl font-bold mb-4">ブラックジャック</h1>
+      <h1 className="font-[Stalinist_One] text-[clamp(2.5rem,7vw,6rem)] tracking-wider text-white [animation:titleGlow_2.2s_ease-in-out_infinite] relative z-20" style={{ fontFamily: '"Stalinist One", sans-serif' }}>
+        BLACKJACK
+      </h1>
+
+      <div className="mb-4 text-lg">所持金: ${money}</div>
+      <div className="mb-4">
+        ベット額: <input type="number" min={1} max={money} value={bet} disabled={!hideDealerHole || gameOver} onChange={e => setBet(Math.max(1, Math.min(money, Number(e.target.value))))} className="w-20 px-2 py-1 rounded text-black" />
+      </div>
 
       {/* ディーラー */}
       <div className="mb-6">
         <h2 className="mb-2">ディーラー</h2>
         <div className="flex flex-wrap items-center justify-center gap-2 content-start">
-          {/* items-centerで縦方向の伸びを防止content-start は複数行になった時の行揃え */}
           {dealerHand.map((c, i) => (
             <CardSvg
               key={i}
@@ -149,18 +181,19 @@ export default function Game() {
 
       {/* 操作ボタン */}
       <div className="space-x-3">
-        <button onClick={startGame} className="px-4 py-2 bg-green-600 rounded">
+        <button onClick={startGame} className="px-4 py-2 bg-green-600 rounded" disabled={!hideDealerHole && !gameOver}>
           スタート
         </button>
-        <button onClick={hit} className="px-4 py-2 bg-blue-600 rounded">
+        <button onClick={hit} className="px-4 py-2 bg-blue-600 rounded" disabled={gameOver || !hideDealerHole}>
           ヒット
         </button>
-        <button onClick={stand} className="px-4 py-2 bg-red-600 rounded">
+        <button onClick={stand} className="px-4 py-2 bg-red-600 rounded" disabled={gameOver || !hideDealerHole}>
           スタンド
         </button>
       </div>
 
       {message && <p className="mt-4 text-xl">{message}</p>}
+      {gameOver && <p className="mt-4 text-2xl text-yellow-300">所持金がなくなりました。ゲーム終了です。</p>}
     </div>
   );
 }
