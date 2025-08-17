@@ -124,6 +124,35 @@ class Hex {
   }, []);
 
   return (
-    <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
+    <>
+      <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"Stalinist One", sans-serif',
+            fontSize: '4rem',
+            color: '#fff',
+            textShadow: '0 0 32px #facc15, 0 0 8px #38bdf8',
+            letterSpacing: '0.18em',
+            userSelect: 'none',
+          }}
+        >
+          YOU WIN!
+        </span>
+      </div>
+    </>
   );
 };
