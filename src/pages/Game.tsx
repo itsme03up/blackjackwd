@@ -1,4 +1,3 @@
-// ...existing code...
 import { useState } from "react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { CardSvg } from "@/components/CardSvg";
@@ -127,13 +126,14 @@ export default function Game() {
           /* フッターの重なり回避（iOSセーフエリア対応） */
           pb-[calc(env(safe-area-inset-bottom)+96px)]
         "
+        style={{ minHeight: '100vh' }}
       >
         {/* うさバニー川田：左上、クリック無効 */}
         <img
 
           src="/images/kwbunny.png"
           alt="kwbunny"
-          className="absolute top-[18%] left-[6%] z-10 w-auto max-h-[38vh] min-w-[110px] object-contain pointer-events-none select-none"
+          className="absolute top-[18%] left-[6%] z-50 w-auto max-h-[60vh] min-w-[200px] object-contain pointer-events-none select-none"
         />
         {(message === "プレイヤーの勝ちです！" || message === "ディーラーはバースト！プレイヤーの勝ちです。") && (
           <div className="absolute left-[6%] top-[10%] z-30 pointer-events-none">

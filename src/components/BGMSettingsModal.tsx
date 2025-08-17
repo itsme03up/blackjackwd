@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useLayoutEffect } from "react"
 import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
 
 export type BGMSettingsModalProps = {
   open: boolean;
@@ -54,7 +53,8 @@ export default function BGMSettingsModal({
     if (!open) return
     const onDown = (e: MouseEvent) => {
       if (!panelRef.current) return
-      if (!panelRef.current.contains(e.target as Node)) onClose()
+      const path = e.composedPath ? e.composedPath() : []
+      if (!path.includes(panelRef.current)) onClose()
     }
     window.addEventListener("mousedown", onDown)
     return () => window.removeEventListener("mousedown", onDown)
@@ -77,17 +77,17 @@ export default function BGMSettingsModal({
           positionClass,
           "z-[70]",
           "origin-top-left animate-in fade-in-0 zoom-in-95",
-          "rounded-2xl bg-zinc-900", // ← 透過やめて濃い背景
+          "rounded-2xl bg-black", // ← 完全不透明な黒背景
           "border border-cyan-400/40 ring-2 ring-cyan-400/25",
           "shadow-2xl p-8 flex flex-col justify-between"
         ].join(" ")}
       >
         {/* ネオングラデ枠（装飾） */}
-        <div
+        {/* <div
           aria-hidden
           className="pointer-events-none absolute -inset-px rounded-2xl
                      bg-[linear-gradient(135deg,rgba(34,211,238,.45),rgba(217,70,239,.45))]"
-        />
+        /> */}
 
         {/* ヘッダー */}
         <div className="relative z-10 mb-6 flex items-center justify-between">
@@ -109,7 +109,13 @@ export default function BGMSettingsModal({
           {/* Enable */}
           <div className="flex items-center justify-between">
             <span className="text-base font-semibold text-cyan-400">BGM を再生</span>
-            <Switch checked={bgmEnabled} onCheckedChange={setBgmEnabled} />
+            {/* <Switch checked={bgmEnabled} onCheckedChange={setBgmEnabled} /> */}
+            <input
+              type="checkbox"
+              checked={bgmEnabled}
+              onChange={e => setBgmEnabled(e.target.checked)}
+              className="w-6 h-6 accent-cyan-400"
+            />
           </div>
 
           {/* Track segmented */}

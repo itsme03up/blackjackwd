@@ -2,12 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import BGMSettingsModal from "@/components/BGMSettingsModal"
 
 // BGMControllerはBGM再生＋設定UIを管理
-export default function BGMController() {
+export default function BGMController({ bgmEnabled, bgmFile, bgmVolume }: { bgmEnabled: boolean, bgmFile: string, bgmVolume: number }) {
   const [open, setOpen] = useState(false)
-  const [bgmEnabled, setBgmEnabled] = useState(true)
-  const [bgmVolume, setBgmVolume] = useState(60)
-  const [bgmFile, setBgmFile] = useState("port.mp3")
-
   const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
@@ -36,16 +32,6 @@ export default function BGMController() {
       >
         BGM
       </button>
-      <BGMSettingsModal
-        open={open}
-        bgmEnabled={bgmEnabled}
-        setBgmEnabled={setBgmEnabled}
-        bgmFile={bgmFile}
-        setBgmFile={setBgmFile}
-        bgmVolume={bgmVolume}
-        setBgmVolume={setBgmVolume}
-        onClose={() => setOpen(false)}
-      />
     </>
   )
 }
