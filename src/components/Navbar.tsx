@@ -10,7 +10,7 @@ const inline = true; // Define inline as needed (true or false)
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
-    const [bgmEnabled, setBgmEnabled] = useState(true);
+    const [bgmEnabled, setBgmEnabled] = useState(false);
     // BGMController 側は `/sounds/${bgmFile}` を付ける実装なのでファイル名のみを保持
     const [bgmFile, setBgmFile] = useState("port.mp3");
     const [bgmVolume, setBgmVolume] = useState(60);

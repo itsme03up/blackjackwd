@@ -6,6 +6,7 @@ import './index.css'
 import Landing from './pages/Landing'
 import Game from './pages/Game'
 import Review from './pages/Review'
+import Log from './pages/Log'
 import './App.css' 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route index element={<Landing />} />
         <Route path="/game" element={<Game />} />
         <Route path="/review" element={<Review />} />
+        <Route path="/log" element={<Log />} />
       </Route>
     </Routes>
   </BrowserRouter>,
