@@ -30,13 +30,15 @@ blackjack-gopnik-style/
 
 ## 🚀 使用技術
 
-- **React + TypeScript**
-- **Vite**
-- **Tailwind CSS**
-- **SVGアニメーション（カードやUIエフェクト）**
-- **AI生成画像　ChatGPT**
-- **AI生成BGM suno**
-- **Google Code https://code.google.com/archive/p/vector-playing-cards/downloads**
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- SVGアニメーション（カードやUIエフェクト）
+- AI生成画像（ChatGPT）
+- AI生成BGM（suno）
+- Google Code（vector-playing-cards）
+- shadcn/ui（UIコンポーネント）
+- react-syntax-highlighter（コード表示）
 
 
 ## 🎮 ページ構成
@@ -61,12 +63,15 @@ npm run dev
 ---
 
 
-## �️ 主な追加・変更履歴（2025-08-17時点）
+## 📝 主な追加・変更履歴（2025-08-17時点）
 
 - C言語ブラックジャックの全コードをTypeScript/JavaScriptと比較できる「レビュー」ページ追加
 - shadcn/ui Tabsコンポーネント導入（技術比較やコード切り替えに使用）
 - react-syntax-highlighter導入（コードブロックのシンタックスハイライト）
 - Vite依存キャッシュのエラー対策方法をREADMEに記載
+- ディーラーの手札合計が21以上でバースト判定・勝利メッセージ表示
+- DEALER TOTALスコアの常時表示（UI改善）
+- ヒット時にディーラーもカードを引く仕様に変更
 
 ## ⚠️ 開発Tips
 
