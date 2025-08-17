@@ -1,6 +1,6 @@
 // src/components/CodeTabs.tsx
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CopyButton } from "@/components/ui/CopyButton";
+import { CopyButton } from "@/components/CopyButton";
 
 type Snippet = { label: string; lang: "c"|"ts"|"js"; code: string };
 
