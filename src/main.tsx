@@ -9,7 +9,7 @@ import ReviewFront from './pages/ReviewFront'
 import ReviewBack from './pages/ReviewBack'
 import ReviewBonus from './pages/ReviewBonus'
 import Log from './pages/Log'
-import './App.css' 
+import './App.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -17,9 +17,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path="/" element={<App />}>
         <Route index element={<Landing />} />
         <Route path="/game" element={<Game />} />
-      <Route path="/review-front" element={<ReviewFront />} />
-      <Route path="/review-back" element={<ReviewBack />} />
-      <Route path="/review-bonus" element={<ReviewBonus />} />
+        <Route path="/review-front" element={<ReviewFront />} />
+        <Route path="/review-back" element={<ReviewBack />} />
+        <Route path="/review-bonus" element={<ReviewBonus />} />
         <Route path="/log" element={<Log />} />
       </Route>
     </Routes>
