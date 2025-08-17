@@ -3,15 +3,16 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 
 export type BGMSettingsModalProps = {
-  open: boolean
-  anchorId?: string            // アンカー（NavbarのBGMラベルなど）任意
-  bgmEnabled: boolean
-  setBgmEnabled: (v: boolean) => void
-  bgmFile: string
-  setBgmFile: (v: string) => void
-  bgmVolume: number
-  setBgmVolume: (v: number) => void
-  onClose: () => void
+  open: boolean;
+  inline?: boolean;           // trueでabsolute配置
+  anchorId?: string;
+  bgmEnabled: boolean;
+  setBgmEnabled: (v: boolean) => void;
+  bgmFile: string;
+  setBgmFile: (v: string) => void;
+  bgmVolume: number;
+  setBgmVolume: (v: number) => void;
+  onClose: () => void;
 }
 
 const TRACKS = [
@@ -22,7 +23,7 @@ const TRACKS = [
 ]
 
 export default function BGMSettingsModal({
-  open, anchorId,
+  open, inline, anchorId,
   bgmEnabled, setBgmEnabled,
   bgmFile, setBgmFile,
   bgmVolume, setBgmVolume,
@@ -51,24 +52,26 @@ export default function BGMSettingsModal({
 
   if (!open) return null
 
-  // 位置: ナビ右上から下に出す。画面幅に応じて自動調整
+  const positionClass = inline
+    ? "absolute left-10 top-[calc(100%+8px)]"
+    : "fixed top-16 left-10";
+
   return (
     <>
-      {/* 薄いオーバーレイ（クリックで閉じる用のキャッチ） */}
-      <div className="fixed inset-0 z-[60]" aria-hidden />
+      {/* inline時はオーバーレイ無し */}
+      {!inline && <div className="fixed inset-0 z-[60]" aria-hidden />}
 
       <div
         ref={panelRef}
         role="dialog"
         aria-label="BGM 設定"
-        className="
-          fixed z-[70] top-16 left-4 w-[min(92vw,420px)]
-          origin-top-left animate-in fade-in-0 zoom-in-95
-          rounded-2xl bg-zinc-900/80 backdrop-blur-xl
-          border border-zinc-700/60 ring-1 ring-cyan-400/25
-          shadow-[0_0_40px_rgba(34,211,238,.22)]
-          p-5 sm:p-6
-        "
+        className={[positionClass,
+          "z-[70] w-[min(92vw,420px)]",
+          "origin-top-left animate-in fade-in-0 zoom-in-95",
+          "rounded-2xl bg-zinc-900/80 backdrop-blur-xl",
+          "border border-zinc-700/60 ring-1 ring-cyan-400/25",
+          "shadow-[0_0_40px_rgba(34,211,238,.22)] p-5 sm:p-6"
+        ].join(" ")}
       >
         {/* ネオングラデ枠（装飾） */}
         <div

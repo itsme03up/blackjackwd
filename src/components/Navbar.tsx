@@ -3,11 +3,13 @@ import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/compon
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
-import BGMController from "@/components/BGMController"
+import BGMSettingsModal from "@/components/BGMSettingsModal"
 
 export default function Navbar() {
     const [open, setOpen] = useState(false)
-    const popRef = useRef<HTMLDivElement>(null)
+    const [bgmEnabled, setBgmEnabled] = useState(true)
+    const [bgmVolume, setBgmVolume] = useState(60)
+    const [bgmFile, setBgmFile] = useState("port.mp3")
     const { pathname } = useLocation()
 
     // ルート遷移時は自動的に閉じる
@@ -82,9 +84,27 @@ export default function Navbar() {
                     </NavigationMenu>
                 </div>
 
-                {/*右：BGMコントローラー*/}
-                <div className="flex md:gap-4">
-                    <BGMController />
+                {/*右：BGMボタン＋モーダル（relativeでabsolute配置）*/}
+                <div className="relative flex items-center gap-4 pr-2">
+                    <button
+                        id="bgm-anchor"
+                        className="text-xs tracking-wider text-cyan-300 select-none font-mono hover:text-cyan-200 transition px-2 py-1 rounded-md hover:bg-zinc-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
+                        style={{ fontFamily: '"Stalinist One", sans-serif' }}
+                        onClick={() => setOpen(v => !v)}
+                    >
+                        BGM
+                    </button>
+                    <BGMSettingsModal
+                        inline
+                        open={open}
+                        bgmEnabled={bgmEnabled}
+                        setBgmEnabled={setBgmEnabled}
+                        bgmFile={bgmFile}
+                        setBgmFile={setBgmFile}
+                        bgmVolume={bgmVolume}
+                        setBgmVolume={setBgmVolume}
+                        onClose={() => setOpen(false)}
+                    />
                 </div>
             </div>
         </header >
