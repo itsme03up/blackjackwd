@@ -51,15 +51,35 @@ export default function ReviewFront() {
               <TabsTrigger value="c-header">C</TabsTrigger>
             </TabsList>
             <TabsContent value="c-header" className="mt-4">
-              <CodeBlock lang="c" code={cHeaderCode} />
+              <CodeBlock lang="c" code={`#include <stdio.h>   // 入出力関数（printf, scanfなど）を使うためのヘッダ\n#include <stdlib.h>  // 標準ライブラリ（rand, srand, mallocなど）を使うためのヘッダ\n#include <time.h>    // 時間関数（time）を使うためのヘッダ（乱数の種に利用）`} />
               <div className="mt-4 text-zinc-200 text-sm leading-7">
-                <p>標準入出力・乱数・時間関数のヘッダを読み込むことで、ブラックジャックの基本機能を使えるようにしています。</p>
+                <p>ここでやっていること</p>
+                <p><b>#include &lt;stdio.h&gt;</b><br />
+                  → <span>printf, scanf</span> など標準的な入出力を扱うために必要なヘッダです。<br />
+                  → 例えば「カードを表示する」ときや「入力を受け付ける」ときに使います。</p>
+                <p><b>#include &lt;stdlib.h&gt;</b><br />
+                  → <Popover content={<div><b>rand()</b><br />乱数を返す関数。<br />使い方: <code>int r = rand();</code></div>} side="top">
+                      <span className="underline cursor-pointer text-blue-300">rand()</span>
+                    </Popover> や <Popover content={<div><b>srand()</b><br />乱数の種を設定する関数。<br />使い方: <code>srand(time(NULL));</code></div>} side="top">
+                      <span className="underline cursor-pointer text-blue-300">srand()</span>
+                    </Popover> を使うためのヘッダです。<br />
+                  → ブラックジャックではカードをシャッフルするときに乱数を使うので必須です。<br />
+                  → 他にもメモリ確保 (malloc) などの関数も含まれていますが、今回は主に乱数用途。</p>
+                <p><b>#include &lt;time.h&gt;</b><br />
+                  → <Popover content={<div><b>time(NULL)</b><br />現在の時刻（UNIX時間）を取得。<br />使い方: <code>time_t t = time(NULL);</code></div>} side="top">
+                      <span className="underline cursor-pointer text-blue-300">time(NULL)</span>
+                    </Popover> で現在の時間を取得するためのヘッダです。<br />
+                  → これを <Popover content={<div><b>srand()</b><br />乱数の種を設定する関数。<br />使い方: <code>srand(time(NULL));</code></div>} side="top">
+                      <span className="underline cursor-pointer text-blue-300">srand()</span>
+                    </Popover> に渡すことで「毎回違うシャッフル結果」にします。<br />
+                  → もしこれをしなかったら、プログラムを実行するたびに同じカード順番になってしまいます。</p>
+                <p>ここまでで、ゲームを動かす準備として「入出力・乱数・時間」のライブラリを読み込んでいる、ということですね。</p>
               </div>
             </TabsContent>
           </Tabs>
         </section>
         <section id="card-struct" className="mb-12">
-          <h2 className="text-2xl font-semibold mb-4">カード構造体</h2>
+          <h2 className="text-2xl font-semibold mb-4">カード１枚の情報をまとめた構造体</h2>
           <Tabs defaultValue="c" className="w-full">
             <TabsList className="flex w-full">
               <TabsTrigger value="c">C</TabsTrigger>
@@ -68,6 +88,36 @@ export default function ReviewFront() {
             </TabsList>
             <TabsContent value="c" className="mt-4">
               <CodeBlock lang="c" code={cardStructC} />
+              <div className="mt-4 text-zinc-200 text-sm leading-7">
+                <p><b>構造体って何？</b><br />
+                  C言語の <Popover content={<div><b>構造体 (struct)</b><br />複数の異なる型のデータをひとまとめにできる仕組み。<br />例：<br /><pre style={{ margin: 0 }}>{`struct Person {\n  char* name;\n  int age;\n};`}</pre></div>} side="top"><span className="underline cursor-pointer text-blue-300">構造体 (struct)</span></Popover> は、複数の異なる型のデータをひとまとめにできる仕組みです。<br />
+                  ブラックジャックでは「カード1枚」に対して「マーク」「数字」「点数」が必要なので、それをひとまとめにしています。</p>
+                <p><b>各メンバの意味</b></p>
+                <p><b>char* suit;</b><br />
+                  → 「マーク（スート）」を表します。<br />
+                  "H"（ハート）、"D"（ダイヤ）、"C"（クラブ）、"S"（スペード）のどれかを文字列として持ちます。<br />
+                  例: "H" なら ♥。</p>
+                <p><b>char* rank;</b><br />
+                  → 「数字や絵札（ランク）」を表します。<br />
+                  "A", "2", "3", …, "10", "J", "Q", "K" の文字列。<br />
+                  例: "A"ならエース。</p>
+                <p><b>int value;</b><br />
+                  → ブラックジャックで使う「点数」を保持します。<br />
+                  <ul className="list-disc pl-6">
+                    <li>A（エース）は 11点（後で必要に応じて1点に変換するロジックあり）</li>
+                    <li>2〜10 は数字通りの点数</li>
+                    <li>J, Q, K は 10点</li>
+                  </ul>
+                </p>
+                <p><b>typedef struct ... Card;</b><br />
+                  最後の <b>Card;</b> がポイントです。<br />
+                  通常は <code>struct Card</code> と書かなければならないのですが、<b>typedef</b> を使って別名を付けているので、以降は単に <b>Card</b> と書くだけでOKになります。</p>
+                <p>例：</p>
+                <CodeBlock lang="c" code={`Card c;  // struct Card c; と同じ意味`} />
+                <p>つまりこの定義のおかげで「カード1枚」を扱うときに、<br />
+                  Card 型の変数を用意すれば「マーク・ランク・点数」をまとめて持てるようになっています。</p>
+                <p>👉 このあと登場する hand_value 関数で、Card の配列を受け取って「手札の合計点」を計算できるようになっているんです。</p>
+              </div>
             </TabsContent>
             <TabsContent value="ts" className="mt-4">
               <CodeBlock lang="ts" code={cardStructTS} />
