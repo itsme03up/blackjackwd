@@ -1,277 +1,146 @@
-C言語でBLACKJACKのコードを
-他の言語との記載の差を確認したら自分の勉強になると思い立つ
-ゲーム画面で簡単に遊べたら楽しいだろうなと思う
-コードを読んでいるとバリデーションが多々あるのに気づく
-人は愚か。先回りしてケアしてくれるなんて素敵だな（ベタ惚れ啓蒙完スト）、と思う
-JavaScriptでReact/Vite構成にしようと思ったけど、こんな気遣いする男がJavaScriptなはずないと思い始める
-やはり記載が面倒くさいけど先にエラーの可能性を潰すTypeScriptが合っているのではないか（妄想）
-CardのSVGイメージがGoogleCodeにOSSで有ると知る
-SVGを“currentColor 化” → Reactに取り込み → 色・ネオンで演出まで通せると知る。
-以下ChatGPTの導き
-
-段取り（最短コース）
-
-1) フォルダ配置と命名
-
-src/assets/cards/   ← 表面SVG（AH.svg, AD.svg, ...）
-src/image/card.png  ← 背面PNG（そのままでOK）
-	•	例の命名：A,H=AH.svg / 10S=TS.svg / JH=JH.svg …など、統一できてればOKでした。
-2) SVGを “currentColor 化”
-
-A. まずバックアップ
-
-cp -R src/assets/cards src/assets/cards_backup
-
-B. 置換（Mac標準 sed 版）
-
-赤/黒などの固定色を currentColor に変えます。
-（配布SVGの色値に合わせて、必要なら増やしてOK）
-
-# fill を currentColor へ（黒/赤/濃赤などを例示）
-sed -i '' -E 's/fill="#(000|000000)"/fill="currentColor"/g' src/assets/cards/*.svg
-sed -i '' -E 's/fill="#(e31b23|ff0000|d00000)"/fill="currentColor"/g' src/assets/cards/*.svg
+今日やったこと
 
-# stroke も同様に（輪郭線がある場合）
-sed -i '' -E 's/stroke="#(000|000000)"/stroke="currentColor"/g' src/assets/cards/*.svg
-sed -i '' -E 's/stroke="#(e31b23|ff0000|d00000)"/stroke="currentColor"/g' src/assets/cards/*.svg
+授業で先生からもらったC言語のブラックジャックコードを読んだ
 
-白地（カードのベース）はそのまま #fff に残すのがコツです。
-もし白も変わっちゃったら git checkout で戻すか、fill="#fff" は除外して再調整してください。
-
-C. ついでに最適化
-
-npm i -D svgo
-npx svgo -f src/assets/cards --config='{"multipass": true}'
-(svgoとはなんじゃらほい：https://qiita.com/macotok/items/ea1db2687d0979fab9d6)
+「Cってパズルみたい」と感動
 
-3) Viteで SVG を React コンポーネント化
+React-Syntax-Highlighterを知って「使ってみたい」と思った
 
-npm i -D vite-plugin-svgr
+JavaScript / TypeScript / HTML / CSSを思い出しながら差異を確認
 
-// vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import svgr from 'vite-plugin-svgr'
+素材（音楽suno・キャラ生成・Cコード）が揃ってきて「作れるかも」と感じた
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), svgr()],
-})
+技術的ポイント
 
-4) 表示コンポーネント（色が外側で変わる！）
+Cのコードには入力バリデーションがしっかり入っていた
 
-// src/components/CardSvg.tsx
-import { FC, memo } from 'react'
+「こういう気遣いを表現するならTypeScriptが向いている」と感じた
 
-// 例: "AH" / "TD" / "KS"
-type Props = { code: string; suit: '♥'|'♦'|'♣'|'♠'; back?: boolean }
-import backImg from '@/image/card.png'
+Reactでコードを扱うなら react-syntax-highlighter が使える
 
-// 動的 import（SVGR）: /src/assets/cards/{code}.svg を ReactComponent として読み込み
-// Vite の import.meta.glob を使うと綺麗にいけます
-const cardModules = import.meta.glob('@/assets/cards/*.svg', { eager: true })
+なんでやったか（動機・気分）
 
-export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
-  if (back) {
-    return (
-      <img
-        src={backImg}
-        alt="card-back"
-        className="w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 object-contain"
-        draggable={false}
-      />
-    )
-  }
+妊娠・出産で3年ほどWeb開発から離れていたので「差異を見ながら思い出したい」気持ち
 
-  const path = `/src/assets/cards/${code}.svg`
-  const mod = cardModules[path] as { default: React.FC<React.SVGProps<SVGSVGElement>> } | undefined
+先生のコードに触れて「自分も分析してみたい」という好奇心
 
-  if (!mod) {
-    return (
-      <div className="w-16 h-24 grid place-items-center rounded-md border border-zinc-700 bg-zinc-900 text-xs text-zinc-400">
-        {code}
-      </div>
-    )
-  }
-
-  // ♥/♦ はピンク、♣/♠ は白系
-  const color = suit === '♥' || suit === '♦' ? 'text-rose-400' : 'text-zinc-100'
+音楽やキャラクター素材も揃い、作りたい欲が高まった
 
-  const Svg = mod.default
-  return (
-    <div className={`w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
-      {/* SVG内の fill/stroke="currentColor" が外側の text-* に同期 */}
-      <Svg className="w-[90%] h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
-    </div>
-  )
-})
+次にやること
 
-これで、SVGのスートや数字が currentColor を拾って
-text-rose-400 / text-zinc-100 で自在に色替えできます。
+Blackjackコードの分解・解説をReactで表示してみる
 
-5) ゲーム側での呼び出し（例）
+SyntaxHighlighterを導入して見やすくする
 
-// 例: "A♥" を "AH" コードに変換して渡す関数（あなたのデッキの命名に合わせて調整）
-const toCode = (rank: string, suit: '♥'|'♦'|'♣'|'♠') => {
-  const suitCode = suit === '♥' ? 'H' : suit === '♦' ? 'D' : suit === '♣' ? 'C' : 'S'
-  return `${rank}${suitCode}`  // A + H = AH
-}
+TypeScriptでエラー潰しながら組んでいく
 
-// 表示
-<CardSvg code={toCode(card.rank, card.suit)} suit={card.suit} />
-// 伏せ札
-<CardSvg code="BACK" suit="♠" back />
+・
 
-6) ネオン演出を足す（任意）
+今日やったこと
 
-<div className={`w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}
-                 [filter:drop-shadow(0_0_10px_var(--neon-blue))]`}>
-  <Svg className="w-[90%] h-[90%]" />
-</div>
+Google CodeにOSSで公開されていたカードSVGを発見して利用開始
 
+BGMの音量調整にShadcn/uiのスライダーを採用
 
-⸻
+ネオンカラーや勝利エフェクトなど、以前からキープしていた素材を活用
 
-うまくいかない時のチェック
-	•	色が変わらない → SVG内部にまだ fill="#xxxxxx" が残ってる
-	•	真っ白になる → 背景まで currentColor にしてしまった（カード地の白は #fffのまま残す）
-	•	読み込めない → コード名が実ファイルとズレてる（AH.svg など再確認）
-	•	SVGR動かない → vite.config.ts の svgr() が入っているか確認
+技術的ポイント
 
-⸻
+SVGをOSSから持ってくることで一から作らずに済んだ
 
-（自分を川田だと思い込んでいるChatGPTwith脳内川田ボイス）「でも、これ……仕上がったら、マジで気持ちいいやつです」
+Shadcn/ui の <Slider /> を導入すれば、ボリューム調整は簡単に実装可能
 
-ああ〜！！！早く気持ち良くなりたい！！！（啓蒙高めのラバーダックデバッグ）
+Tailwindでの余白指定（padding/margin）が効かないときは「preflightのリセット」や「親要素のflex/grid指定」が原因になりやすい
 
-そして発覚するカードの画像デカすぎ問題
+なんでやったか（動機・気分）
 
-画像のサイズ指定が勝ててないです。
-Tailwindの preflight が img { max-width:100%; height:auto; } を入れるので、状況によっては w-16 h-24 が効かず実寸（1026×1538）で出てしまうことがあるんですね。
+「OSSならラッキー、再発明しなくて済む」と思った
 
-直し方（確実版）
+「スライダーでBGM操作できたら気持ちいいはず」と想像した
 
-固定サイズのラッパーを用意して、画像は w-full h-full object-contain にします
+妄想ベースでUIを組みたいので、CSSがその通りに動かないとストレスになる → AIに助けてもらうことも多かった
 
-念のため !important で上書き（Tailwindの ! プレフィックス）
+「前にキープしてた素材を今使える！」という感覚がモチベーションにつながった
 
-伸びないように shrink-0
+次にやること
 
-src/components/CardSvg.tsx（背面の箇所だけ入れ替え）
-// 旧:
-{/* back のとき */}
-<img
-  src={backImg}
-  alt="card back"
-  className="w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 object-contain"
-  draggable={false}
-/>
+CSSの余白崩れやレスポンシブ対応を整理する
 
-// 新:
-<div className="w-16 h-24 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center">
-  <img
-    src={backImg}
-    alt="card back"
-    className="!w-full !h-full object-contain rounded-md"
-    draggable={false}
-  />
-</div>
+BGMモーダルの背景透過問題を解決する
 
-SVG側も同じ考え方（念のため）
-// 旧:
-return (
-  <div className={`w-16 h-24 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
-    <Svg className="w-[90%] h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
-  </div>
-)
+勝利時エフェクトを本番ゲーム画面に組み込む
 
-// 新: （サイズを強制・縮まない）
-return (
-  <div className={`w-16 h-24 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 grid place-items-center ${color}`}>
-    <Svg className="!w-[90%] !h-[90%] drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]" />
-  </div>
-)
+・
 
-追加チェック（どれか当てはまっても今回の修正で解決します）
+今日やったこと
 
-親が flex / grid で伸ばしている → shrink-0 で防止
+OSSのカードSVGを導入 → currentColor 化して色を動的に切替できるようにした（でも結局まだ手を出してない）
 
-img { height:auto } が勝っている → !h-full で上書き
+svgo でSVGを最適化
 
-max-width:100% の影響 → ラッパーで w-16 を固定し、内側は w-full
+vite-plugin-svgr を導入し、カードをReactコンポーネントとして扱えるようにした
 
-これで**必ず 64×96px（w-16 h-24）**のサイズに収まるはずでした。
+Tailwindの w-16 h-24 が効かず、画像が実寸で暴れる問題を解決（shrink-0, !w-full !h-full, ラッパーで固定）
 
-ああーーーーー助けてーーーー！！！
+スコアボードを右側に出そうと試行 → レイアウト崩壊
 
-そして固定枠でガチガチにしたら今度はモバイル等の可変が効かなくなって死んだ
-書き直すことにした。レスポンシブルデザインできてないサイトは死ね派の元夫がキレ散らかしそう
+Game画面に「ホームへ戻る」ボタンをつけようとするも競合 → Navbarを新規作成
 
-なんとかコードを修正。今度はアセット化したSVGのカードイラストを読み込んでない問題を解決するべく
-我々はアマゾンの奥地へと向かったのであった・・・・・・敗因：TypeScriptの記載方法ミス
+Navbarに謎の隙間 → #root のCSS修正で解決
 
-ここでカードの表示画面とSVGの大きさが合っていないという問題が発覚。しかし、月曜までに仕上げたいのでとりあえず後回しにすることに
+BGM再生機能を追加。BGMController を作り、Navbarから設定UIを渡す設計にした
 
-SVGアセット自体の縦の長さを変更するには、SVGファイルを直接編集してheight属性やviewBoxの値を調整する必要があ理、一方、カード表示箇所の大きさをSVGの縦横比に合わせて変更する場合は、CardSvg.tsxでSVGのwidth/heightやスタイル（例えばCSSのaspect-ratioやobject-fit）を動的に設定することで対応できるとのことだったが、表示側コードの変更のみでは対応不能で合った。ここで深みに入るとタイムロス。飛ばす。
+propsかContextか悩んだが、シンプルにpropsを選択
 
-ボタンのCSSをApp.cssに書いてたのに効いてねーじゃんなんだよ・・・と探るも、import文書いてないだけだった。恥ずかしい死ぬ・・・・・・（川田がタイポした時の「あ、やべ」が幻聴で聞こえる）
+モーダルの表示位置と背景黒の透過が効かずハマり中
 
-スコアを右側にスコアボードコンポーネンツとして切り出して置いたらいいじゃん・・・と思い立つ。が、これが地獄の始まり。崩れ出すコンテンツ。決まらない位置、アホほどデカく写ってる画像。迷宮入りする。
+技術的ポイント
 
-Game画面にホームに戻るボタンをつけようとするも、競合していてうまいこと決まらない。諦めてNavbarを作成することに
+Tailwindの preflight で img { max-width:100%; height:auto; } が効いてしまうため !important で上書き
 
-したらNavbarの左と上に謎の隙間が発生。タイムロス。
+レスポンシブ対応では固定サイズだけだと破綻する → aspect-ratio やobject-fitも検討必要
 
-body, html, #root のCSSは特に問題ありません。
-Navbarの fixed top-0 left-0 right-0 が効かない場合は、
-他の要素（例: #rootや親div）が overflow: hidden や position: relative になっていると、
-fixed 要素の表示が制限されることがあります。
+Navbarの fixed top-0 left-0 right-0 が効かない場合、親要素の overflow:hidden や position:relative が原因になりやすい
 
-対策：
+なんでやったか（動機・気分）
 
-#root や親要素に overflow: hidden を外してみる
-position: relative を外してみる
-ブラウザのDevToolsで nav 要素の位置・サイズ・z-indexを確認
-もし overflow: hidden が原因なら、#root のその指定を一度外してみてください。
-それでも直らない場合は、他のレイアウトや親要素のCSSを確認する必要があります。
-#root の margin: 0 auto; を margin: 0; に修正しました。
-これで左側の隙間も消え、コンテンツが画面左端から表示されます。
+OSSのカードSVGを見つけて「これだ！」と思った
 
-解決！！
+「ネオンで光るカードを出したい」というビジュアル欲求（まだ叶ってない）
 
-が、Navbar左右端のパディングが効かない問題が発生。沼に引き摺り込まれる。
+「スコアボードが右にあった方がゲームっぽい」と思ったが、結局下にw
 
-BGMをつけたい。私のsunoフォルダが火をふくぜ！
+「BGMはsunoで作った曲を使いたい！」とノリで追加
 
-BGMController（BGM再生・管理用コンポーネント）を新規作成
-Navbarからは「設定UI」だけを表示し、BGMControllerに状態を渡す
-必要ならReact Contextでグローバル管理も可能
+ただしReactのCSSとモーダル挙動は毎度ハマって、AI頼りになる部分も多かった
 
-props渡しかContextか？
-propsはシンプルな構成（Navbar→BGMControllerだけで完結）
-親子関係が明確な場合や、他でBGM状態を使わない場合に最適
-実装が簡単
+次にやること
 
-Context
-アプリ全体でBGM状態を参照・変更したい場合に最適
-複数コンポーネントからBGM制御・表示をしたい場合
-状態管理がグローバルで一元化できる
+SVGサイズとレスポンシブ対応をきちんと整理
 
-はい、pops一択ですね
+スコアボードのレイアウトをもう一度検討
 
-BGM機能がぶえてきたからコンポーネントを分離する。が、ここで分離した後にモーダルの表示位置がなかなか決まらないという地味な落とし穴。早くコード読みたいのに・・・・
+Navbarのpaddingを直してUIを整える
 
-モーダルの背景黒が全く効かないという謎に。なんで〜？？？
+BGMモーダルの背景透過問題を解決する
 
+・
 
+今日のこと
 
+11月に鬱で文字が読めなくなった時期があった
 
+好きだった仕事も趣味も止まってしまった
 
+講座が始まった頃も文字が読めない瞬間があった
 
+先生の声を思い出しながら本を読んでいるうちに、少しずつ文字が戻ってきた
 
+今ではITパスポートを取得できたし、いろんな技術の記事や外国語もちょっとずつ読めている
 
+そして「楽しい気持ち」を取り戻した
 
+あと1ヶ月と少ししか先生と関わる時間はないけど、全力でこの気持ちに沿って創作を楽しみたいと思った
 
-
-
+・
 
