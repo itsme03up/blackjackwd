@@ -1,19 +1,13 @@
 // src/components/Navbar.tsx
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/components/ui/navigation-menu"
 import { Link, NavLink, useLocation } from "react-router-dom"
-import { Slider } from "@/components/ui/slider"
-import BGMSettingsModal from "@/components/BGMSettingsModal"
-import BGMController from "@/components/BGMController"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
+import BGMController from "@/components/BGMController"
 
 export default function Navbar() {
     const [open, setOpen] = useState(false)
-    const [bgmEnabled, setBgmEnabled] = useState(true)
-    const [bgmVolume, setBgmVolume] = useState(60)
-    const [bgmFile, setBgmFile] = useState("port.mp3")
-    // 型警告回避: HTMLDivElement | null でOK
-    const popRef = useRef<HTMLDivElement | null>(null)
+    const popRef = useRef<HTMLDivElement>(null)
     const { pathname } = useLocation()
 
     // ルート遷移時は自動的に閉じる
@@ -36,21 +30,6 @@ export default function Navbar() {
 
     return (
         <>
-            {/* BGM再生はBGMControllerで管理 */}
-            {/* BGMControllerをNavbar内でレンダリング（Navbarが表示されている間のみBGM再生） */}
-            <BGMController enabled={bgmEnabled} file={bgmFile} volume={bgmVolume} />
-            {/* BGMSettingsModalでUI管理 */}
-            <BGMSettingsModal
-                open={open}
-                popRef={popRef}
-                bgmEnabled={bgmEnabled}
-                setBgmEnabled={setBgmEnabled}
-                bgmFile={bgmFile}
-                setBgmFile={setBgmFile}
-                bgmVolume={bgmVolume}
-                setBgmVolume={setBgmVolume}
-                onClose={() => setOpen(false)}
-            />
             <header className="
       sticky top-0 z-50
       bg-black/70 backdrop-blur-md
@@ -103,96 +82,12 @@ export default function Navbar() {
                     </NavigationMenu>
                 </div>
 
-                {/* 右：BGM コントローラ */}
-                <div className="relative flex items-center">
-                    <button
-                        type="button"
-                        aria-haspopup="dialog"
-                        aria-expanded={open}
-                        aria-controls="bgm-popover"
-                        onClick={() => setOpen((v) => !v)}
-                        style={{ fontFamily: '"Stalinist One", sans-serif' }}
-                        className="neon-btn
-                text-xs tracking-wider font-mono
-                text-cyan-300 hover:text-cyan-200
-                px-2 py-1 rounded-md
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40
-                transition
-              "
-                    >
-                        BGM
-                    </button>
-                    {open && (
-                        <div
-                            id="bgm-popover"
-                            ref={popRef}
-                            role="dialog"
-                            aria-label="BGM設定"
-                            className="
-                  absolute right-full top-full mt-2 mr-2
-                  min-w-[320px] max-w-md min-h-[340px]
-                  rounded-xl bg-black !bg-black !opacity-100 ring-1 ring-cyan-400/30 shadow-2xl
-                  p-6 z-50 flex flex-col justify-between
-                "
-                            style={{ background: '#000', opacity: 1 }}
-                        >
-                            <div className="mb-6 text-cyan-300 font-semibold text-xs tracking-wider" style={{ fontFamily: '"Stalinist One", sans-serif' }}>BGM 設定</div>
-                            <div className="flex flex-col gap-8 flex-1">
-                              <label className="flex items-center gap-2 text-zinc-200 text-xs font-semibold">
-                                <input type="checkbox" checked={bgmEnabled} onChange={e => setBgmEnabled(e.target.checked)} />
-                                BGMを流す
-                              </label>
-                              <label className="flex flex-col gap-2 text-zinc-200 text-xs font-semibold">
-                                <span>BGM選択</span>
-                                <select
-                                  className="bg-zinc-800 text-zinc-100 rounded px-2 py-1"
-                                  value={bgmFile}
-                                  onChange={e => setBgmFile(e.target.value)}
-                                >
-                                  <option value="port.mp3">port.mp3</option>
-                                  <option value="katyusha.mp3">katyusha.mp3</option>
-                                  <option value="russian-roulette.mp3">russian-roulette.mp3</option>
-                                  <option value="shashka.mp3">shashka.mp3</option>
-                                </select>
-                              </label>
-                              <label className="flex flex-col gap-2 text-zinc-200 text-xs font-semibold">
-                                <span>ボリューム</span>
-                                <div className="w-full flex items-center justify-center">
-                                  <Slider
-                                    value={[bgmVolume]}
-                                    onValueChange={v => setBgmVolume(v[0])}
-                                    max={100}
-                                    step={1}
-                                    className="w-full max-w-md my-4
-                                      [&>span[data-orientation=horizontal]]:h-1.5
-                                      [&>span[data-orientation=horizontal]]:w-full
-                                      [&>span[data-orientation=horizontal]]:bg-zinc-700/70
-                                      [&>span[data-orientation=horizontal]]:rounded-full
-                                      [&>span>span]:h-full
-                                      [&>span>span]:bg-gradient-to-r [&>span>span]:from-cyan-400 [&>span>span]:to-fuchsia-500
-                                      [&>span>span]:rounded-full
-                                      [&>button]:h-3.5 [&>button]:w-3.5
-                                      [&>button]:bg-white [&>button]:shadow
-                                      [&>button]:border [&>button]:border-zinc-300
-                                      [&>button]:focus-visible:outline-none"
-                                  />
-                                </div>
-                              </label>
-                              {/* hidden audio element for BGM playback */}
-                            </div>
-                            <div className="mt-3 flex justify-end">
-                                <button
-                                    className="neon-btn px-3 py-1.5 rounded-md text-xs font-semibold mt-6"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    閉じる
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                {/*右：BGMコントローラー*/}
+                <div className="flex md:gap-4">
+                    <BGMController />
                 </div>
             </div>
         </header >
         </>
   )
-}   
+}
