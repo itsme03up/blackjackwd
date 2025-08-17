@@ -49,7 +49,10 @@ export default function Game() {
 
   // ゲーム開始（初期配布）
   const startGame = () => {
-    if (money <= 0) { setMessage("所持金がありません。"); setGameOver(true); return; }
+    if (money <= 0) {
+      setMoney(100); // 所持金リセット
+      setBet(10);   // ベットも初期化（必要なら）
+    }
     const d = shuffle(createDeck());
     setDeck(d.slice(4));
     setPlayerHand([d[0], d[2]]);
