@@ -78,6 +78,11 @@ export default function Game() {
           if (cash <= 0) setGameOver(true);
           return cash;
         });
+      } else if (handValue(nh) === 21) {
+        setHideDealerHole(false);
+        setMessage("プレイヤーの勝ちです！");
+        setMoney(m => m + bet);
+        setGameOver(false);
       }
       return nh;
     });
