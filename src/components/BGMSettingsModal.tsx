@@ -65,9 +65,9 @@ export default function BGMSettingsModal({
 
   const positionClass = inline
     ? (side === "left"
-        ? "absolute right-0 top-[calc(100%+8px)] w-[min(92vw,520px)] max-h-[70vh]"
-        : "absolute left-0  top-[calc(100%+8px)] w-[min(92vw,520px)] max-h-[70vh]")
-    : "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(98vw,600px)] max-h-[80vh]";
+        ? "absolute right-0 top-[calc(100%+8px)] w-[min(92vw,520px)] max-h-[70vh] min-h-[400px]"
+        : "absolute left-0  top-[calc(100%+8px)] w-[min(92vw,520px)] max-h-[70vh] min-h-[400px]")
+    : "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(98vw,600px)] max-h-[80vh] min-h-[440px]";
 
   return (
     <>
@@ -92,9 +92,10 @@ export default function BGMSettingsModal({
           positionClass,
           "z-[70]",
           "origin-top-left animate-in fade-in-0 zoom-in-95",
-          "rounded-2xl bg-black", // ← 完全不透明な黒背景
+          "rounded-2xl",
           "border border-cyan-400/40 ring-2 ring-cyan-400/25",
-          "shadow-2xl p-8 flex flex-col justify-between"
+          "shadow-2xl p-8 flex flex-col justify-between",
+          "bg-zinc-900/60" // ボタンと同じグレー背景
         ].join(" ")}
       >
         {/* ネオングラデ枠（装飾） */}
@@ -105,26 +106,25 @@ export default function BGMSettingsModal({
         /> */}
 
         {/* ヘッダー */}
-        <div className="relative z-10 mb-6 flex items-center justify-between">
-          <h3 className="text-lg font-bold tracking-wider text-cyan-400 drop-shadow"
+        <div className="relative z-10 mb-6 flex items-center justify-between min-h-[56px]">
+          <h3 className="text-lg font-bold tracking-wider text-cyan-400 drop-shadow w-full text-center"
               style={{ fontFamily: '"Stalinist One", sans-serif' }}>
             BGM SETTINGS
           </h3>
           <button
-            className="rounded-md px-3 py-2 text-base text-white bg-cyan-600 hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40 shadow"
+            className="absolute right-6 top-2/3 -translate-y-1/2 rounded-md px-3 py-2 text-base text-white bg-transparent hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40 shadow"
             onClick={onClose}
             aria-label="閉じる"
+            style={{ color: '#fff', right: '24px', top: '66%', transform: 'translateY(-50%)', position: 'absolute' }}
           >
             ✕
           </button>
         </div>
-
-        {/* ボディ */}
-        <div className="relative z-10 flex flex-col gap-8 flex-1">
+        <div className="relative z-10 flex flex-col gap-10 flex-1 items-center justify-center w-full">
           {/* Enable */}
-          <div className="flex items-center justify-between">
-            <label htmlFor="bgm-enable" className="text-base font-semibold text-cyan-400 cursor-pointer select-none">
-              BGM を再生
+          <div className="flex items-center justify-center gap-4 w-full max-w-md">
+            <label htmlFor="bgm-enable" className="text-base text-cyan-400 cursor-pointer select-none" style={{ fontFamily: '"Stalinist One", sans-serif' }}>
+              BGM
             </label>
             <input
               id="bgm-enable"
@@ -134,10 +134,9 @@ export default function BGMSettingsModal({
               className="w-6 h-6 accent-cyan-400"
             />
           </div>
-
           {/* Track segmented */}
-          <div className="space-y-2">
-            <div className="text-base font-semibold text-cyan-400 mb-2">トラック</div>
+          <div className="space-y-2 w-full max-w-md">
+            <div className="text-base font-semibold text-cyan-400 mb-2 text-center" style={{ fontFamily: '"Stalinist One", sans-serif' }}>TRACKS</div>
             <div className="grid grid-cols-2 gap-4">
               {TRACKS.map(t => {
                 const active = t.value === bgmFile
@@ -145,18 +144,8 @@ export default function BGMSettingsModal({
                   <button
                     key={t.value}
                     onClick={() => setBgmFile(t.value)}
-                    className={[
-                      "relative w-full rounded-xl px-4 py-3 text-base font-bold",
-                      "border-2 transition-colors backdrop-blur",
-                      active
-                        ? "border-cyan-400 text-white shadow-lg bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20"
-                        : "border-zinc-700 text-white hover:bg-gradient-to-r hover:from-cyan-500/10 hover:to-fuchsia-500/10"
-                    ].join(" ")}
-                    style={{
-                      fontFamily: '"Stalinist One", sans-serif',
-                      WebkitTextStroke: '1px white',
-                      color: '#fff'
-                    }}
+                    className={["relative w-full rounded-xl px-4 py-3 text-base font-bold","border-2 transition-colors backdrop-blur",active?"border-cyan-400 text-white shadow-lg bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20":"border-zinc-700 text-white hover:bg-gradient-to-r hover:from-cyan-500/10 hover:to-fuchsia-500/10"].join(" ")}
+                    style={{fontFamily: '"Stalinist One", sans-serif',WebkitTextStroke: '1px white',color: '#fff'}}
                   >
                     {t.label}
                   </button>
@@ -164,27 +153,18 @@ export default function BGMSettingsModal({
               })}
             </div>
           </div>
-
           {/* Volume */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-base font-semibold text-cyan-400">ボリューム</span>
-              <span className="text-base tabular-nums text-cyan-400">{bgmVolume}%</span>
+          <div className="space-y-4 w-full max-w-md">
+            <div className="flex items-center justify-center gap-4 w-full max-w-md mx-auto">
+              <span className="text-base font-semibold text-cyan-400" style={{ fontFamily: '"Stalinist One", sans-serif' }}>VOLUME</span>
+              <span className="text-base tabular-nums text-cyan-400" style={{ fontFamily: '"Stalinist One", sans-serif' }}>{bgmVolume}%</span>
             </div>
             <Slider
               value={[bgmVolume]}
               onValueChange={v => setBgmVolume(v[0])}
               max={100}
               step={1}
-              className="w-full min-h-[40px] h-8
-                         [&>span[data-orientation=horizontal]]:h-8
-                         [&>span[data-orientation=horizontal]]:rounded-full
-                         [&>span[data-orientation=horizontal]]:bg-zinc-800
-                         [&>span>span]:h-full [&>span>span]:rounded-full
-                         [&>span>span]:bg-gradient-to-r [&>span>span]:from-cyan-400 [&>span>span]:to-fuchsia-500
-                         [&>button]:h-8 [&>button]:w-8 [&>button]:bg-white
-                         [&>button]:border-2 [&>button]:border-cyan-400
-                         [&>button]:shadow-lg [&>button]:focus-visible:outline-none"
+              className="w-full min-h-[40px] h-8 [&>span[data-orientation=horizontal]]:h-8 [&>span[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-white [&>span>span]:h-3 [&>span>span]:rounded-full [&>span>span]:bg-white [&>button]:h-8 [&>button]:w-8 [&>button]:min-w-[32px] [&>button]:min-h-[32px] [&>button]:bg-cyan-400 [&>button]:border-2 [&>button]:border-fuchsia-400 [&>button]:shadow-lg [&>button]:focus-visible:outline-none"
             />
           </div>
         </div>

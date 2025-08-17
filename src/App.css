@@ -177,3 +177,26 @@ body::-webkit-scrollbar {
   75% { font-size: 8em; }
   100% { font-size: 8em; }
 }
+
+/* App.css */
+#bgm-modal {
+  background: #18181b !important; /* zinc-900, 完全不透明 */
+  border-radius: 1rem;
+  margin: 8px;
+  box-sizing: border-box;
+}
+
+/* BGMモーダル用スライダーのカスタムCSS例 */
+#bgm-modal .custom-slider-bar {
+  height: 12px;
+  background: linear-gradient(90deg, #22d3ee 0%, #d946ef 100%);
+  border-radius: 6px;
+}
+#bgm-modal .custom-slider-thumb {
+  width: 32px;
+  height: 32px;
+  background: #22d3ee;
+  border: 2px solid #d946ef;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22d3ee, 0 0 16px #d946ef;
+}
