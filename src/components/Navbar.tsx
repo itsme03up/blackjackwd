@@ -107,12 +107,13 @@ export default function Navbar() {
                             aria-label="BGM volume"
                             className="
                   absolute right-full top-full mt-2 mr-2
-                  min-w-[240px] max-w-xs
-                  rounded-xl bg-zinc-900/95 ring-1 ring-cyan-400/30 shadow-2xl
-                  p-6 z-50
+                  min-w-[240px] max-w-xs min-h-[220px]
+                  rounded-xl bg-black !bg-black !opacity-100 ring-1 ring-cyan-400/30 shadow-2xl
+                  p-6 z-50 flex flex-col justify-between
                 "
+                            style={{ background: '#000', opacity: 1 }}
                         >
-                            <div className="mb-3 text-cyan-300 font-semibold text-xs tracking-wider" style={{ fontFamily: '"Stalinist One", sans-serif' }}>BGM Volume</div>
+                            <div className="mb-6 text-cyan-300 font-semibold text-xs tracking-wider" style={{ fontFamily: '"Stalinist One", sans-serif' }}>BGM Volume</div>
                             <Slider
                                 defaultValue={[60]}
                                 max={100}
@@ -136,8 +137,7 @@ export default function Navbar() {
                             />
                             <div className="mt-3 flex justify-end">
                                 <button
-                                    className="px-3 py-1.5 rounded-md text-xs font-semibold
-                               bg-cyan-400 text-zinc-900 hover:bg-cyan-300 transition"
+                                    className="neon-btn px-3 py-1.5 rounded-md text-xs font-semibold mt-6"
                                     onClick={() => setOpen(false)}
                                 >
                                     閉じる
