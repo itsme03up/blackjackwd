@@ -241,5 +241,25 @@ position: relative を外してみる
 
 が、Navbar左右端のパディングが効かない問題が発生。沼に引き摺り込まれる。
 
+BGMをつけたい。私のsunoフォルダが火をふくぜ！
+
+BGMController（BGM再生・管理用コンポーネント）を新規作成
+Navbarからは「設定UI」だけを表示し、BGMControllerに状態を渡す
+必要ならReact Contextでグローバル管理も可能
+
+props渡しかContextか？
+propsはシンプルな構成（Navbar→BGMControllerだけで完結）
+親子関係が明確な場合や、他でBGM状態を使わない場合に最適
+実装が簡単
+
+Context
+アプリ全体でBGM状態を参照・変更したい場合に最適
+複数コンポーネントからBGM制御・表示をしたい場合
+状態管理がグローバルで一元化できる
+
+はい、pops一択ですね
+
+
+
 
 
