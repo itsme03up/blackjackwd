@@ -1,4 +1,4 @@
-// src/pages/Review.tsx
+ // src/pages/Review.tsx
 import { Callout } from "@/components/Callout";
 import { DiffBlock } from "@/components/DiffBlock";
 import { ReviewTOC } from "@/components/ReviewTOC";
@@ -301,7 +301,7 @@ export default function Review() {
                         <h2 className="text-2xl font-semibold mb-4">カード１枚の情報をまとめた構造体</h2>
                         <Tabs defaultValue="c" className="w-full">
                             <TabsList className="flex w-full">
-                                <TabsTrigger value="c">C言語</TabsTrigger>
+                                <TabsTrigger value="c">C</TabsTrigger>
                                 <TabsTrigger value="ts">TypeScript</TabsTrigger>
                                 <TabsTrigger value="js">JavaScript</TabsTrigger>
                             </TabsList>
@@ -309,32 +309,32 @@ export default function Review() {
                                 <CodeBlock lang="c" code={`// カード1枚の情報をまとめた構造体\ntypedef struct {\n    char* suit;   // カードのマーク（H, D, C, S）\n    char* rank;   // カードの数字や絵札（A, 2, 3, ..., K）\n    int value;    // ブラックジャックでの点数（A=11, J/Q/K=10 など）\n} Card;`} />
                                 <div className="mt-4 text-zinc-200 text-sm leading-7">
                                     <p><b>構造体って何？</b><br />
-                                    C言語の <b>構造体 (struct)</b> は、複数の異なる型のデータをひとまとめにできる仕組みです。<br />
-                                    ブラックジャックでは「カード1枚」に対して「マーク」「数字」「点数」が必要なので、それをひとまとめにしています。</p>
+                                        C言語の <Popover content={<div><b>構造体 (struct)</b><br />複数の異なる型のデータをひとまとめにできる仕組み。<br />例：<br /><pre style={{ margin: 0 }}>{`struct Person {\n  char* name;\n  int age;\n};`}</pre></div>} side="top"><span className="underline cursor-pointer text-blue-300">構造体 (struct)</span></Popover> は、複数の異なる型のデータをひとまとめにできる仕組みです。<br />
+                                        ブラックジャックでは「カード1枚」に対して「マーク」「数字」「点数」が必要なので、それをひとまとめにしています。</p>
                                     <p><b>各メンバの意味</b></p>
                                     <p><b>char* suit;</b><br />
-                                    → 「マーク（スート）」を表します。<br />
-                                    "H"（ハート）、"D"（ダイヤ）、"C"（クラブ）、"S"（スペード）のどれかを文字列として持ちます。<br />
-                                    例: "H" なら ♥。</p>
+                                        → 「マーク（スート）」を表します。<br />
+                                        "H"（ハート）、"D"（ダイヤ）、"C"（クラブ）、"S"（スペード）のどれかを文字列として持ちます。<br />
+                                        例: "H" なら ♥。</p>
                                     <p><b>char* rank;</b><br />
-                                    → 「数字や絵札（ランク）」を表します。<br />
-                                    "A", "2", "3", …, "10", "J", "Q", "K" の文字列。<br />
-                                    例: "A"ならエース。</p>
+                                        → 「数字や絵札（ランク）」を表します。<br />
+                                        "A", "2", "3", …, "10", "J", "Q", "K" の文字列。<br />
+                                        例: "A"ならエース。</p>
                                     <p><b>int value;</b><br />
-                                    → ブラックジャックで使う「点数」を保持します。<br />
-                                    <ul className="list-disc pl-6">
-                                        <li>A（エース）は 11点（後で必要に応じて1点に変換するロジックあり）</li>
-                                        <li>2〜10 は数字通りの点数</li>
-                                        <li>J, Q, K は 10点</li>
-                                    </ul>
+                                        → ブラックジャックで使う「点数」を保持します。<br />
+                                        <ul className="list-disc pl-6">
+                                            <li>A（エース）は 11点（後で必要に応じて1点に変換するロジックあり）</li>
+                                            <li>2〜10 は数字通りの点数</li>
+                                            <li>J, Q, K は 10点</li>
+                                        </ul>
                                     </p>
                                     <p><b>typedef struct ... Card;</b><br />
-                                    最後の <b>Card;</b> がポイントです。<br />
-                                    通常は <code>struct Card</code> と書かなければならないのですが、<b>typedef</b> を使って別名を付けているので、以降は単に <b>Card</b> と書くだけでOKになります。</p>
+                                        最後の <b>Card;</b> がポイントです。<br />
+                                        通常は <code>struct Card</code> と書かなければならないのですが、<b>typedef</b> を使って別名を付けているので、以降は単に <b>Card</b> と書くだけでOKになります。</p>
                                     <p>例：</p>
                                     <CodeBlock lang="c" code={`Card c;  // struct Card c; と同じ意味`} />
                                     <p>つまりこの定義のおかげで「カード1枚」を扱うときに、<br />
-                                    Card 型の変数を用意すれば「マーク・ランク・点数」をまとめて持てるようになっています。</p>
+                                        Card 型の変数を用意すれば「マーク・ランク・点数」をまとめて持てるようになっています。</p>
                                     <p>👉 このあと登場する hand_value 関数で、Card の配列を受け取って「手札の合計点」を計算できるようになっているんです。</p>
                                 </div>
                             </TabsContent>
@@ -347,8 +347,53 @@ export default function Review() {
                         </Tabs>
                     </section>
                     <section className="mb-12">
-                        <h2 className="text-2xl font-semibold mb-4">2. Calculating Hand Value</h2>
-                        <p className="mb-2">The <code>hand_value</code> function determines the total score of a hand, handling Aces as 11 or 1.</p>
+                        <h2 className="text-2xl font-semibold mb-4">手札の合計値を計算する関数のプロトタイプ宣言</h2>
+                        <Tabs defaultValue="c-header" className="w-full mb-4">
+                            <TabsList className="flex w-full">
+                                <TabsTrigger value="c-header">C</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="c-header" className="mt-4">
+                                <CodeBlock lang="c" code={`int hand_value(Card hand[], int count);`} />
+                                <div className="mt-4 text-zinc-200 text-sm leading-7">
+                                    <p>ここでやっていること</p>
+                                    <p>これは <b>関数プロトタイプ宣言</b> と呼ばれるものです。</p>
+                                    <p><b>プロトタイプ宣言って何？</b><br />
+                                        C言語では「この関数がどんな名前で、どんな引数を受け取り、どんな型を返すか」を <b>あらかじめコンパイラに教えておく必要</b> があります。<br />
+                                        そうしないと、ソースの上から順に読むコンパイラが「この関数どんなの？知らん」となってエラーや警告を出します。</p>
+                                    <p>例：</p>
+                                    <CodeBlock lang="c" code={`int hand_value(Card hand[], int count); // ← 宣言`} />
+                                    <ul className="list-disc pl-6">
+                                        <li><b>int</b> は戻り値（返す型）</li>
+                                        <li><b>hand_value</b> は関数名</li>
+                                        <li><b>(Card hand[], int count)</b> は引数の型と名前</li>
+                                    </ul>
+                                    <p>これで「hand_value という関数は Card型の配列とintを受け取り、intを返す」と分かるわけです。</p>
+                                    <h3 className="mt-4 text-lg font-semibold">JS / TSにあるか？</h3>
+                                    <b>JavaScript</b><br />
+                                    → JSには「プロトタイプ宣言」という概念はありません。<br />
+                                    関数はファイル内でどこに書いても呼び出せます（関数宣言なら「巻き上げ（hoisting）」される）。<br />
+                                    だから <code>function foo() &#123;&#125;</code> は前でも後でも呼べます。<br />
+                                    つまり <b>宣言が自動的にされる言語</b> なんですね。
+                                    <br /><br />
+                                    <b>TypeScript</b><br />
+                                    → TSもJSと同じく「関数プロトタイプ宣言」は不要です。<br />
+                                    ただし型チェックのために <b>関数の型をインターフェースや型エイリアスで定義</b> することはあります。<br />
+                                    例：
+                                    <CodeBlock lang="ts" code={`type HandValue = (hand: Card[], count: number) => number;\nconst hand_value: HandValue = (hand, count) => { ... }`} />
+                                    <p>これは「Cのプロトタイプ宣言」に役割がちょっと似ていて、型情報を先に教えておくという意味では近いです。</p>
+                                    <h3 className="mt-4 text-lg font-semibold">まとめ</h3>
+                                    <ul className="list-disc pl-6">
+                                        <li>C言語 → プロトタイプ宣言が必須（関数の型と存在を前もって伝える）</li>
+                                        <li>JS → 不要（自動で巻き上げされる）</li>
+                                        <li>TS → 不要だが、型のためにインターフェースやtypeを使うことがある（Cっぽく感じる部分）</li>
+                                    </ul>
+                                </div>
+                            </TabsContent>
+                        </Tabs>
+                    </section>
+                   <section className="mb-8">
+                        <h2 className="text-2xl font-semibold mb-4">手札の合計値を計算する関数</h2>
+                        <p className="mb-2">A(エース)は11または1として扱い、21を超えないように調整する</p>
                         <Tabs defaultValue="c" className="w-full">
                             <TabsList className="flex w-full">
                                 <TabsTrigger value="c">C</TabsTrigger>
@@ -356,21 +401,57 @@ export default function Review() {
                                 <TabsTrigger value="js">JavaScript</TabsTrigger>
                             </TabsList>
                             <TabsContent value="c" className="mt-4">
-                                <CodeBlock lang="c" code={handValueCCode} />
+                                <CodeBlock lang="c" code={`int hand_value(Card hand[], int count) {\n    int total = 0;   // 合計点\n    int aces = 0;    // エースの枚数カウント\n    // まず全カードを加算し、エースの数も数える\n    for (int i = 0; i < count; i++) {\n        total += hand[i].value;        // カードの点数を足す\n        if (hand[i].value == 11) aces++; // エースならカウント\n    }\n    // 合計が21を超える場合、エースを1点として扱って調整\n    while (total > 21 && aces > 0) {\n        total -= 10; // 11点のエースを1点に変更（差分は10点減らす）\n        aces--;      // エースの調整回数を減らす\n    }\n    return total; // 調整後の合計を返す\n}`} />
                             </TabsContent>
                             <TabsContent value="ts" className="mt-4">
-                                <CodeBlock lang="ts" code={handValueTSCode} />
+                                <CodeBlock lang="ts" code={`function handValue(hand: Card[]): number {\n    let total = 0;\n    let aces = 0;\n    for (const card of hand) {\n        total += card.value;\n        if (card.value === 11) aces++;\n    }\n    while (total > 21 && aces > 0) {\n        total -= 10;\n        aces--;\n    }\n    return total;\n}`} />
                             </TabsContent>
                             <TabsContent value="js" className="mt-4">
-                                <CodeBlock lang="js" code={handValueJSCode} />
+                                <CodeBlock lang="js" code={`function handValue(hand) {\n    let total = 0;\n    let aces = 0;\n    for (const card of hand) {\n        total += card.value;\n        if (card.value === 11) aces++;\n    }\n    while (total > 21 && aces > 0) {\n        total -= 10;\n        aces--;\n    }\n    return total;\n}`} />
                             </TabsContent>
                         </Tabs>
-                        <ul className="mt-4 list-disc pl-6 text-zinc-300 text-sm leading-7">
-                            <li>The C function takes an array and a count. TS/JS use dynamic arrays and <code>for...of</code> loops.</li>
-                            <li>TypeScript provides type safety for the hand and return value.</li>
-                            <li>JavaScript uses JSDoc for type hints and tooling support.</li>
-                        </ul>
+                        <div className="mt-4 text-zinc-200 text-sm leading-7">
+                            <p><b>引数</b></p>
+                            <ul className="list-disc pl-6">
+                                <li><b>Card hand[]</b> … 手札（カードの配列）</li>
+                                <li><b>int count</b> … その枚数</li>
+                            </ul>
+                            <p><b>ローカル変数</b></p>
+                            <ul className="list-disc pl-6">
+                                <li><b>total</b> … 手札の合計点を入れる</li>
+                                <li><b>aces</b> … エース（A=11点）の数を数えておく</li>
+                            </ul>
+                            <p>手札を1枚ずつ見て点数を <b>total</b> に加算。同時に「11点のカード（=エース）」を数える。<br />
+                            → エースは特別扱い（11 or 1 に変わる可能性がある）から。</p>
+                            <p>もし合計が 21を超えてしまった（バーストしそう） 場合、まだエースが残っていれば 11点→1点に変換 して調整します。<br />
+                            （11から1にするので 10点減らす）<br />
+                            つまり「なるべく高い点数を維持しつつ、21を超えないようにする」ための処理ですね。</p>
+                            <p>例：</p>
+                            <ul className="list-disc pl-6">
+                                <li>A + 9 = 20 → そのまま 20</li>
+                                <li>A + 9 + 5 = 25 → エースを1に変える → 15</li>
+                            </ul>
+                            <p>最後に「バーストしないように調整済みの合計」を返します。</p>
+                            <h3 className="mt-4 text-lg font-semibold">まとめると</h3>
+                            <ul className="list-disc pl-6">
+                                <li>全カードの点数を合計</li>
+                                <li>エースの数を数える</li>
+                                <li>合計が21を超えたら、エースを11→1にして調整</li>
+                                <li>最終的な合計点を返す</li>
+                            </ul>
+                            <p>ブラックジャック特有の「エースの柔軟さ」をしっかり表現している関数でした。</p>
+                        </div>
                     </section>
+
+
+
+
+
+
+
+
+
+
                     <section className="mb-8">
                         <h2 className="text-xl font-semibold mb-2">3. Creating the Deck</h2>
                         <p className="mb-2">Creates a standard 52-card deck.</p>
@@ -419,65 +500,65 @@ export default function Review() {
                             <li>TS/JS use destructuring assignment for swapping.</li>
                         </ul>
                     </section>
-                    </section>
-                    <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-2">5. Displaying Cards and Hands</h2>
-                        <p className="mb-2">Shows the hand and its total value.</p>
-                        <Tabs defaultValue="c" className="w-full">
-                            <TabsList className="flex w-full">
-                                <TabsTrigger value="c">C</TabsTrigger>
-                                <TabsTrigger value="ts">TypeScript</TabsTrigger>
-                                <TabsTrigger value="js">JavaScript</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="c" className="mt-4">
-                                <CodeBlock lang="c" code={showHandCCode} />
-                            </TabsContent>
-                            <TabsContent value="ts" className="mt-4">
-                                <CodeBlock lang="ts" code={showHandTSCode} />
-                            </TabsContent>
-                            <TabsContent value="js" className="mt-4">
-                                <CodeBlock lang="js" code={showHandJSCode} />
-                            </TabsContent>
-                        </Tabs>
-                        <ul className="mt-4 list-disc pl-6 text-zinc-300 text-sm leading-7">
-                            <li>C uses <code>printf</code> for output; TS/JS return formatted strings for flexible display.</li>
-                            <li>TS/JS use <code>map</code> and <code>join</code> for concise card string creation.</li>
-                            <li>Template literals improve readability in TS/JS.</li>
-                        </ul>
-                    </section>
-                    <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-2">6. Player's Turn</h2>
-                        <p className="mb-2">Handles the player's choices to Hit or Stand, and checks for bust.</p>
-                        <Tabs defaultValue="c" className="w-full">
-                            <TabsList className="flex w-full">
-                                <TabsTrigger value="c">C</TabsTrigger>
-                                <TabsTrigger value="ts">TypeScript</TabsTrigger>
-                                <TabsTrigger value="js">JavaScript</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="c" className="mt-4">
-                                <CodeBlock lang="c" code={playerTurnCCode} />
-                            </TabsContent>
-                            <TabsContent value="ts" className="mt-4">
-                                <CodeBlock lang="ts" code={playerTurnTSCode} />
-                            </TabsContent>
-                            <TabsContent value="js" className="mt-4">
-                                <CodeBlock lang="js" code={playerTurnJSCode} />
-                            </TabsContent>
-                        </Tabs>
-                        <ul className="mt-4 list-disc pl-6 text-zinc-300 text-sm leading-7">
-                            <li>C uses blocking I/O; TS/JS use async input (e.g., <code>promptUser</code>).</li>
-                            <li>TS/JS update arrays directly; state is managed via objects.</li>
-                            <li>TS/JS use <code>push</code> for adding cards, not manual index/count.</li>
-                        </ul>
-                    </section>
-                    <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-2">7. ゲーム全体の流れ</h2>
-                        <p className="mb-2">C言語のmain関数はループでゲームを管理します。TypeScript/Reactでは状態管理（useState, useReducer等）で同様の流れを作ります。</p>
-                    </section>
-                    <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-2">まとめ</h2>
-                        <p>C言語の各関数はTypeScriptでも関数・型として表現できます。UI部分（入力・表示）はReactのコンポーネントやイベントで置き換えます。<br />もし特定の部分のTypeScript実装例やReactコンポーネント化が必要であれば、詳細を指定してください。</p>
-                    </section>
+                </section>
+                <section className="mb-8">
+                    <h2 className="text-xl font-semibold mb-2">5. Displaying Cards and Hands</h2>
+                    <p className="mb-2">Shows the hand and its total value.</p>
+                    <Tabs defaultValue="c" className="w-full">
+                        <TabsList className="flex w-full">
+                            <TabsTrigger value="c">C</TabsTrigger>
+                            <TabsTrigger value="ts">TypeScript</TabsTrigger>
+                            <TabsTrigger value="js">JavaScript</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="c" className="mt-4">
+                            <CodeBlock lang="c" code={showHandCCode} />
+                        </TabsContent>
+                        <TabsContent value="ts" className="mt-4">
+                            <CodeBlock lang="ts" code={showHandTSCode} />
+                        </TabsContent>
+                        <TabsContent value="js" className="mt-4">
+                            <CodeBlock lang="js" code={showHandJSCode} />
+                        </TabsContent>
+                    </Tabs>
+                    <ul className="mt-4 list-disc pl-6 text-zinc-300 text-sm leading-7">
+                        <li>C uses <code>printf</code> for output; TS/JS return formatted strings for flexible display.</li>
+                        <li>TS/JS use <code>map</code> and <code>join</code> for concise card string creation.</li>
+                        <li>Template literals improve readability in TS/JS.</li>
+                    </ul>
+                </section>
+                <section className="mb-8">
+                    <h2 className="text-xl font-semibold mb-2">6. Player's Turn</h2>
+                    <p className="mb-2">Handles the player's choices to Hit or Stand, and checks for bust.</p>
+                    <Tabs defaultValue="c" className="w-full">
+                        <TabsList className="flex w-full">
+                            <TabsTrigger value="c">C</TabsTrigger>
+                            <TabsTrigger value="ts">TypeScript</TabsTrigger>
+                            <TabsTrigger value="js">JavaScript</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="c" className="mt-4">
+                            <CodeBlock lang="c" code={playerTurnCCode} />
+                        </TabsContent>
+                        <TabsContent value="ts" className="mt-4">
+                            <CodeBlock lang="ts" code={playerTurnTSCode} />
+                        </TabsContent>
+                        <TabsContent value="js" className="mt-4">
+                            <CodeBlock lang="js" code={playerTurnJSCode} />
+                        </TabsContent>
+                    </Tabs>
+                    <ul className="mt-4 list-disc pl-6 text-zinc-300 text-sm leading-7">
+                        <li>C uses blocking I/O; TS/JS use async input (e.g., <code>promptUser</code>).</li>
+                        <li>TS/JS update arrays directly; state is managed via objects.</li>
+                        <li>TS/JS use <code>push</code> for adding cards, not manual index/count.</li>
+                    </ul>
+                </section>
+                <section className="mb-8">
+                    <h2 className="text-xl font-semibold mb-2">7. ゲーム全体の流れ</h2>
+                    <p className="mb-2">C言語のmain関数はループでゲームを管理します。TypeScript/Reactでは状態管理（useState, useReducer等）で同様の流れを作ります。</p>
+                </section>
+                <section className="mb-8">
+                    <h2 className="text-xl font-semibold mb-2">まとめ</h2>
+                    <p>C言語の各関数はTypeScriptでも関数・型として表現できます。UI部分（入力・表示）はReactのコンポーネントやイベントで置き換えます。<br />もし特定の部分のTypeScript実装例やReactコンポーネント化が必要であれば、詳細を指定してください。</p>
+                </section>
             </div>
         </Layout>
     );
