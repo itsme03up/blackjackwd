@@ -2,11 +2,11 @@
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/components/ui/navigation-menu"
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { Slider } from "@/components/ui/slider"
+import BGMSettingsModal from "@/components/BGMSettingsModal"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
 
 export default function Navbar() {
-    const audioRef = useRef<HTMLAudioElement>(null)
     const [open, setOpen] = useState(false)
     const [bgmEnabled, setBgmEnabled] = useState(true)
     const [bgmVolume, setBgmVolume] = useState(60)
@@ -17,18 +17,6 @@ export default function Navbar() {
     // ルート遷移時は自動的に閉じる
     useEffect(() => setOpen(false), [pathname])
 
-    // BGM再生・音量・選択・有効化（モーダル開閉に依存しない）
-    useEffect(() => {
-        if (!audioRef.current) return;
-        audioRef.current.src = `/sounds/${bgmFile}`;
-        audioRef.current.volume = bgmVolume / 100;
-        audioRef.current.loop = true;
-        if (bgmEnabled) {
-            audioRef.current.play().catch(() => {});
-        } else {
-            audioRef.current.pause();
-        }
-    }, [bgmEnabled, bgmFile, bgmVolume]);
     // Esc と外クリックで閉じる
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
@@ -46,8 +34,19 @@ export default function Navbar() {
 
     return (
         <>
-            {/* BGM再生は常にレンダリング */}
-            <audio ref={audioRef} style={{ display: 'none' }} />
+            {/* BGM再生はBGMControllerで管理 */}
+            {/* BGMSettingsModalでUI管理 */}
+            <BGMSettingsModal
+                open={open}
+                popRef={popRef}
+                bgmEnabled={bgmEnabled}
+                setBgmEnabled={setBgmEnabled}
+                bgmFile={bgmFile}
+                setBgmFile={setBgmFile}
+                bgmVolume={bgmVolume}
+                setBgmVolume={setBgmVolume}
+                onClose={() => setOpen(false)}
+            />
             <header className="
       sticky top-0 z-50
       bg-black/70 backdrop-blur-md
