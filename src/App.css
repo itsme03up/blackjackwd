@@ -100,3 +100,45 @@ body::-webkit-scrollbar {
   z-index:0;
   pointer-events:none;
 }
+
+/* --- Club neon navbar helpers --- */
+.nav-glass{
+  background:
+    radial-gradient(120% 120% at 10% -10%,
+      rgba(56,189,248,.10) 0%, rgba(244,114,182,.06) 28%, rgba(24,24,27,.85) 60%) ,
+    rgba(24,24,27,.72);           /* bg-zinc-900/72 相当 */
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(63,63,70,.6); /* border-zinc-700/60 */
+  box-shadow:
+    0 2px 12px rgba(0,0,0,.35),
+    inset 0 -1px 0 rgba(255,255,255,.03);
+  isolation:isolate;
+}
+
+@keyframes hueShift {
+  0%   { filter: hue-rotate(0deg) brightness(1); }
+  50%  { filter: hue-rotate(40deg) brightness(1.05); }
+  100% { filter: hue-rotate(0deg) brightness(1); }
+}
+.nav-gradient-border{
+  position: relative;
+}
+.nav-gradient-border::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0; height:2px;
+  background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6, #22d3ee);
+  background-size: 200% 100%;
+  animation: hueShift 8s linear infinite;
+  opacity:.9;
+  box-shadow: 0 0 8px rgba(168,85,247,.6), 0 0 14px rgba(34,211,238,.35);
+}
+
+/* Slider & Switch をネオン寄せに少し補助（shadcn/ui の見た目を崩さない範囲） */
+[data-slot="slider-track"]{
+  background: linear-gradient(90deg, rgba(34,211,238,.35), rgba(244,114,182,.35));
+}
+[data-slot="slider-range"]{
+  background: linear-gradient(90deg, #22d3ee, #f472b6);
+  box-shadow: 0 0 10px rgba(34,211,238,.5);
+}

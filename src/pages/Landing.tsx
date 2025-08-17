@@ -4,7 +4,7 @@ import { Button } from '../components/ui/button'
 export default function Landing() {
     return (
         <main className="relative w-full min-h-screen px-6 flex justify-center items-center">
-            <div className="max-w-3xl w-full min-h-screen flex items-center justify-center bg-zinc-950 overflow-hidden mr-32">
+            <div className="max-w-3xl w-full min-h-screen flex items-center justify-center bg-zinc-950 overflow-hidden">
                 {/* 三本の縦線：アディダス風（全高） */}
                 <div
                     className="
