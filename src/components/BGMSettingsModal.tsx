@@ -31,14 +31,15 @@ export default function BGMSettingsModal({
   const panelRef = useRef<HTMLDivElement>(null)
   const [side, setSide] = useState<"left"|"right">("left");
 
+  // inline時：アンカー位置から右側の残り幅を見て左右寄せを決定
   useLayoutEffect(() => {
     if (!open || !inline) return;
-    const el = panelRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
+    const anchor = anchorId ? document.getElementById(anchorId) : null;
+    const rect = anchor?.getBoundingClientRect();
+    if (!rect) return;
     const spaceRight = window.innerWidth - rect.left;
-    setSide(spaceRight < 420 ? "right" : "left");
-  }, [open, inline]);
+    setSide(spaceRight < 520 ? "right" : "left");
+  }, [open, inline, anchorId]);
 
   // Esc で閉じる
   useEffect(() => {
@@ -62,16 +63,30 @@ export default function BGMSettingsModal({
 
   if (!open) return null
 
-  const positionClass = "fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[min(98vw,600px)] h-[min(90vh,480px)]";
+  const positionClass = inline
+    ? (side === "left"
+        ? "absolute right-0 top-[calc(100%+8px)] w-[min(92vw,520px)] max-h-[70vh]"
+        : "absolute left-0  top-[calc(100%+8px)] w-[min(92vw,520px)] max-h-[70vh]")
+    : "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(98vw,600px)] max-h-[80vh]";
 
   return (
     <>
-      {/* inline時はオーバーレイ無し */}
-      {!inline && <div className="fixed inset-0 z-[60]" aria-hidden />}
+      {/* オーバーレイ（inline=falseの時のみ） */}
+      {!inline && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-[2px]"
+          aria-hidden
+          onClick={onClose}
+        />
+      )}
 
       <div
         ref={panelRef}
         role="dialog"
+        aria-modal="true"
+        id="bgm-modal"
+        tabIndex={-1}
+        onMouseDown={(e) => e.stopPropagation()}
         aria-label="BGM 設定"
         className={[
           positionClass,
@@ -108,9 +123,11 @@ export default function BGMSettingsModal({
         <div className="relative z-10 flex flex-col gap-8 flex-1">
           {/* Enable */}
           <div className="flex items-center justify-between">
-            <span className="text-base font-semibold text-cyan-400">BGM を再生</span>
-            {/* <Switch checked={bgmEnabled} onCheckedChange={setBgmEnabled} /> */}
+            <label htmlFor="bgm-enable" className="text-base font-semibold text-cyan-400 cursor-pointer select-none">
+              BGM を再生
+            </label>
             <input
+              id="bgm-enable"
               type="checkbox"
               checked={bgmEnabled}
               onChange={e => setBgmEnabled(e.target.checked)}
@@ -132,8 +149,8 @@ export default function BGMSettingsModal({
                       "relative w-full rounded-xl px-4 py-3 text-base font-bold",
                       "border-2 transition-colors backdrop-blur",
                       active
-                        ? "border-cyan-400 bg-transparent text-white shadow-lg"
-                        : "border-zinc-700 bg-transparent text-white hover:bg-cyan-800/40"
+                        ? "border-cyan-400 text-white shadow-lg bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20"
+                        : "border-zinc-700 text-white hover:bg-gradient-to-r hover:from-cyan-500/10 hover:to-fuchsia-500/10"
                     ].join(" ")}
                     style={{
                       fontFamily: '"Stalinist One", sans-serif',
@@ -159,7 +176,15 @@ export default function BGMSettingsModal({
               onValueChange={v => setBgmVolume(v[0])}
               max={100}
               step={1}
-              className="w-full min-h-[40px] h-8 [&>span[data-orientation=horizontal]]:h-8 [&>span[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-cyan-700 [&>span>span]:h-full [&>span>span]:bg-gradient-to-r [&>span>span]:from-cyan-400 [&>span>span]:to-fuchsia-500 [&>span>span]:rounded-full [&>button]:h-8 [&>button]:w-8 [&>button]:bg-white [&>button]:border-2 [&>button]:border-cyan-400 [&>button]:shadow-lg [&>button]:focus-visible:outline-none"
+              className="w-full min-h-[40px] h-8
+                         [&>span[data-orientation=horizontal]]:h-8
+                         [&>span[data-orientation=horizontal]]:rounded-full
+                         [&>span[data-orientation=horizontal]]:bg-zinc-800
+                         [&>span>span]:h-full [&>span>span]:rounded-full
+                         [&>span>span]:bg-gradient-to-r [&>span>span]:from-cyan-400 [&>span>span]:to-fuchsia-500
+                         [&>button]:h-8 [&>button]:w-8 [&>button]:bg-white
+                         [&>button]:border-2 [&>button]:border-cyan-400
+                         [&>button]:shadow-lg [&>button]:focus-visible:outline-none"
             />
           </div>
         </div>

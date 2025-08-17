@@ -4,13 +4,15 @@ import { Link, NavLink, useLocation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import BGMSettingsModal from "@/components/BGMSettingsModal"
+import BGMController from "@/components/BGMController"
 
 const inline = true; // Define inline as needed (true or false)
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [bgmEnabled, setBgmEnabled] = useState(true);
-    const [bgmFile, setBgmFile] = useState("/sounds/bgm1.mp3");
+    // BGMController 側は `/sounds/${bgmFile}` を付ける実装なのでファイル名のみを保持
+    const [bgmFile, setBgmFile] = useState("port.mp3");
     const [bgmVolume, setBgmVolume] = useState(60);
     const [side, setSide] = useState<"left" | "right">("left");
     const anchorRef = useRef<HTMLButtonElement>(null);
@@ -19,18 +21,12 @@ export default function Navbar() {
     // ルート遷移時は自動的に閉じる
     useEffect(() => setOpen(false), [pathname])
 
-    // Esc と外クリックで閉じる
+  // Esc だけで閉じる（外側クリックはモーダル側で処理）
     useEffect(() => {
-        const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
-        const onClick = (e: MouseEvent) => {
-            if (!anchorRef.current) return
-            if (!anchorRef.current.contains(e.target as Node)) setOpen(false)
-        }
-        document.addEventListener("keydown", onKey)
-        document.addEventListener("mousedown", onClick)
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
+    document.addEventListener("keydown", onKey)
         return () => {
-            document.removeEventListener("keydown", onKey)
-            document.removeEventListener("mousedown", onClick)
+      document.removeEventListener("keydown", onKey)
         }
     }, [])
 
@@ -115,7 +111,7 @@ export default function Navbar() {
                         BGM
                     </button>
                     <BGMSettingsModal
-                        inline
+                        inline={false}
                         open={open}
                         bgmEnabled={bgmEnabled}
                         setBgmEnabled={setBgmEnabled}
@@ -128,7 +124,7 @@ export default function Navbar() {
                 </div>
             </div>
         </header >
-        {!inline && <div className="fixed inset-0 z-[60]" aria-hidden />}
+      {/* ...existing code... */}
         {/* If you need to use pos, calculate it here */}
         {/*
           Example usage for pos:

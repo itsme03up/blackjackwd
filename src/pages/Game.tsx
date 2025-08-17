@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { CardSvg } from "@/components/CardSvg";
 import { cardCode } from "@/lib/cardCode";
 import { Button } from "@/components/ui/button";
