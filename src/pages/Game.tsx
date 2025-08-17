@@ -55,12 +55,20 @@ export default function Game() {
       setBet(10);   // ベットも初期化（必要なら）
     }
     const d = shuffle(createDeck());
+    const initialPlayerHand = [d[0], d[2]];
     setDeck(d.slice(4));
-    setPlayerHand([d[0], d[2]]);
+    setPlayerHand(initialPlayerHand);
     setDealerHand([d[1], d[3]]);
     setHideDealerHole(true);
-    setMessage("");
-    setGameOver(false);
+    if (handValue(initialPlayerHand) === 21) {
+      setMessage("プレイヤーの勝ちです！");
+      setHideDealerHole(false);
+      setMoney(money + bet);
+      setGameOver(false);
+    } else {
+      setMessage("");
+      setGameOver(false);
+    }
   };
 
   // ヒット
