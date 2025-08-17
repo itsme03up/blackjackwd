@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom'
 
 export default function App() {
-  // 画面固定＆スクロール不可
+  // スクロール可能に変更
   return (
-    <div className="min-h-dvh bg-zinc-950 text-zinc-200 overflow-hidden fixed inset-0 w-full h-full">
+    <div className="min-h-dvh bg-zinc-950 text-zinc-200">
       <Outlet />
     </div>
   )
