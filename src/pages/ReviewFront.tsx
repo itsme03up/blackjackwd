@@ -1,4 +1,6 @@
-// ブラックジャック解説 前半ページ
+// このファイルは削除されました
+// REMOVE ME
+// REMOVE ME
 import { ReviewTOC } from "../components/ReviewTOC";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
 import { Popover } from "../components/ui/popover";

@@ -349,7 +349,6 @@ export default function Review() {
                             </ul>
                         </div>
                     </section>
-                </section>
                 <section className="mb-8">
                     <h2 className="text-xl font-semibold mb-2">プレイヤーのターンを処理する関数</h2>
                     <div className="mb-4 text-zinc-200 text-sm leading-7">

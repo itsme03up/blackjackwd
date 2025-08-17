@@ -1,4 +1,7 @@
-// ブラックジャック解説 後半ページ
+// このファイルは削除されました
+// REMOVE ME
+// REMOVE ME
+// REMOVE ME
 import { ReviewTOC } from "../components/ReviewTOC";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
 import { CodeBlock } from "../components/CodeBlock";
