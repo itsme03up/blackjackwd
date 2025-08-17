@@ -167,7 +167,7 @@ export default function Game() {
 
         {/* ディーラー */}
         <section className="pt-6 mb-6 flow-root">
-          <h2 className="mt-0 mb-2">ディーラー</h2>
+          <h2 className="mt-0 mb-2" style={{ fontFamily: '"Stalinist One", sans-serif' }}>DEALER</h2>
           <div className="flex flex-wrap justify-center items-start gap-2">
             {dealerHand.map((c, i) => (
               <CardSvg
@@ -183,13 +183,13 @@ export default function Game() {
 
         {/* プレイヤー */}
         <section className="pt-6 mb-8 flow-root">
-          <h2 className="mt-0 mb-2">プレイヤー</h2>
+          <h2 className="mt-0 mb-2" style={{ fontFamily: '"Stalinist One", sans-serif' }}>PLAYER</h2>
           <div className="flex justify-center items-start gap-2">
             {playerHand.map((c, i) => (
               <CardSvg key={i} code={cardCode(c.rank, c.suit)} suit={c.suit} />
             ))}
           </div>
-          <p className="mt-2">合計: {handValue(playerHand)}</p>
+          <p className="mt-2" style={{ fontFamily: '"Stalinist One", sans-serif' }}>Total: {handValue(playerHand)}</p>
         </section>
 
         {/* 操作ボタン */}
