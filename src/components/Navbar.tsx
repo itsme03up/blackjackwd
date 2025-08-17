@@ -3,6 +3,7 @@ import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/compon
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { Slider } from "@/components/ui/slider"
 import BGMSettingsModal from "@/components/BGMSettingsModal"
+import BGMController from "@/components/BGMController"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
 
@@ -11,7 +12,8 @@ export default function Navbar() {
     const [bgmEnabled, setBgmEnabled] = useState(true)
     const [bgmVolume, setBgmVolume] = useState(60)
     const [bgmFile, setBgmFile] = useState("port.mp3")
-    const popRef = useRef<HTMLDivElement>(null)
+    // 型警告回避: HTMLDivElement | null でOK
+    const popRef = useRef<HTMLDivElement | null>(null)
     const { pathname } = useLocation()
 
     // ルート遷移時は自動的に閉じる
@@ -35,6 +37,8 @@ export default function Navbar() {
     return (
         <>
             {/* BGM再生はBGMControllerで管理 */}
+            {/* BGMControllerをNavbar内でレンダリング（Navbarが表示されている間のみBGM再生） */}
+            <BGMController enabled={bgmEnabled} file={bgmFile} volume={bgmVolume} />
             {/* BGMSettingsModalでUI管理 */}
             <BGMSettingsModal
                 open={open}

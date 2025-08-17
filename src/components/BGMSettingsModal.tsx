@@ -3,7 +3,7 @@ import React from "react"
 
 export type BGMSettingsModalProps = {
   open: boolean
-  popRef: React.RefObject<HTMLDivElement>
+  popRef: React.RefObject<HTMLDivElement | null>
   bgmEnabled: boolean
   setBgmEnabled: (v: boolean) => void
   bgmFile: string
