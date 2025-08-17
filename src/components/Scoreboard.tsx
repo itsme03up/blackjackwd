@@ -29,31 +29,27 @@ export const Scoreboard: React.FC<Props> = ({
       {/* BALANCE */}
       <div className="flex items-center gap-3">
         <div className="size-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-        <div className="leading-tight">
+        <div className="leading-tight text-center w-full flex flex-col items-center" style={{ fontFamily: '"Stalinist One", sans-serif' }}>
           <div className="text-[11px] tracking-[0.18em] text-zinc-400">BALANCE</div>
           <div className="text-2xl font-semibold tabular-nums">$ {balance}</div>
         </div>
       </div>
 
       {/* BET（テンキー入力） */}
-      <div className="flex items-center justify-end gap-3">
-        <div className="text-[11px] tracking-[0.18em] text-zinc-400">BET</div>
+      <div className="flex items-center gap-3 w-full justify-center">
+        <div className="text-[11px] tracking-[0.18em] text-zinc-400 text-left flex flex-col justify-center" style={{ fontFamily: '"Stalinist One", sans-serif' }}>BET</div>
         <input
           type="number"
-          inputMode="numeric"
+          inputMode="decimal"
           pattern="[0-9]*"
           value={bet}
           min={min}
           max={max}
           onChange={(e) => onBetChange(clamp(Number(e.target.value)))}
           className="
-            w-28 h-10
-            text-right text-xl tabular-nums
-            px-3 rounded-lg
-            bg-zinc-950/60 text-white
-            border border-yellow-400/60
-            outline-none
-            focus:border-yellow-300 focus:ring-2 focus:ring-yellow-300/40
+            w-36 h-12
+            bg-zinc-900/60 border border-zinc-700/40 rounded-lg px-4 text-xl text-center font-bold tabular-nums text-yellow-300 shadow-[0_0_8px_rgba(250,204,21,0.12)]
+            outline-none focus:ring-2 focus:ring-yellow-400/40 transition-all
           "
         />
       </div>

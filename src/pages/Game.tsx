@@ -118,7 +118,7 @@ export default function Game() {
     <Layout>
       <div
         className="
-          relative mx-auto max-w-3xl h-screen flex flex-col justify-start text-white text-center
+          relative mx-auto max-w-3xl min-h-[calc(100dvh-64px)] flex flex-col justify-start text-white text-center
           [--card-w:3.8rem] [--card-h:5.6rem]
           sm:[--card-w:4.4rem] sm:[--card-h:6.6rem]
           lg:[--card-w:5rem] lg:[--card-h:7.6rem]
@@ -204,9 +204,9 @@ export default function Game() {
         )}
         {gameOver && <p className="mt-4 text-2xl text-yellow-300">所持金がなくなりました。ゲーム終了です。</p>}
 
-        {/* 画面下中央絶対配置スコアボード */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center pointer-events-none">
-          <div className="mb-4 bg-zinc-900/75 backdrop-blur-md border-t border-zinc-700/60 rounded-xl px-4 py-2 shadow-lg max-w-4xl w-full flex justify-center pointer-events-auto">
+        {/* 画面下中央固定スコアボード */}
+        <div className="fixed left-1/2 -translate-x-1/2 bottom-[max(0px,env(safe-area-inset-bottom))] z-50 w-full max-w-4xl px-4 pointer-events-none">
+          <div className="bg-zinc-900/75 backdrop-blur-md border-t border-zinc-700/60 rounded-xl px-4 py-2 shadow-lg pointer-events-auto">
             <Scoreboard
               balance={money}
               bet={bet}
