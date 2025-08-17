@@ -1,3 +1,11 @@
+/* Radix Popover override: 完全不透明 */
+.radix-popover-content {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border-radius: 0.5rem;
+  border: 1px solid #27272a;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+}
 #root::-webkit-scrollbar {
   display: none;
 }
