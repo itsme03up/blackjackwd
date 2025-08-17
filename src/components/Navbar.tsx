@@ -100,16 +100,24 @@ export default function Navbar() {
 
                 {/*右：BGMボタン＋モーダル（relativeでabsolute配置）*/}
                 <div className="relative overflow-visible flex items-center gap-4 pr-2">
+                    {/* BGMControllerはBGM再生のみ。BGMボタンはBGMSettingsModalのトリガー専用に */}
+                    <BGMController
+                        bgmEnabled={bgmEnabled}
+                        bgmFile={bgmFile}
+                        bgmVolume={bgmVolume}
+                    />
+                    {/* BGMボタン（BGMSettingsModalのトリガー） */}
                     <button
                         ref={anchorRef}
                         id="bgm-anchor"
-                        className="text-xs tracking-wider text-cyan-300 font-mono px-2 py-1 rounded-md
-               hover:text-cyan-200 hover:bg-zinc-800/60 transition
-               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
+                        className="neon-btn text-xs tracking-wider font-mono text-cyan-300 px-2 py-1 rounded-md
+                     hover:text-cyan-100 transition focus-visible:outline-none
+                     focus-visible:ring-2 focus-visible:ring-cyan-400/40"
                         onClick={() => setOpen(v => !v)}
                     >
                         BGM
                     </button>
+                    {/* BGMSettingsModal（モーダル本体） */}
                     <BGMSettingsModal
                         inline={false}
                         open={open}
