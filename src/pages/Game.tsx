@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { CardSvg } from "@/components/CardSvg";
 import { cardCode } from "@/lib/cardCode";
@@ -47,6 +47,7 @@ export default function Game() {
   const [money, setMoney] = useState(100);
   const [bet, setBet] = useState(10);
   const [gameOver, setGameOver] = useState(false);
+  const [showLoseEffect, setShowLoseEffect] = useState(false);
 
   // ゲーム開始（初期配布）
   const startGame = () => {
@@ -127,6 +128,14 @@ export default function Game() {
       return cash;
     });
   };
+
+  useEffect(() => {
+    if (message === "バースト！ディーラーの勝ちです。" || message === "ディーラーの勝ちです。") {
+      setShowLoseEffect(true);
+      const timer = setTimeout(() => setShowLoseEffect(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const canHit   = hideDealerHole && !gameOver && deck.length > 0;
   const canStand = hideDealerHole && !gameOver;
@@ -213,6 +222,14 @@ export default function Game() {
           <VictoryCanvas />
         )}
         {gameOver && <p className="mt-4 text-2xl text-yellow-300">所持金がなくなりました。ゲーム終了です。</p>}
+
+        {/* 負けエフェクト */}
+        {showLoseEffect && (
+          <div className="death-background">
+            <img src="/images/kawada-thinking.png" alt="thinking kawada" style={{ maxHeight: '40vh', marginRight: '2rem' }} />
+            <span className="death-text">YOU LOSE</span>
+          </div>
+        )}
 
         {/* 画面下中央固定スコアボード */}
         <div className="fixed left-1/2 -translate-x-1/2 bottom-[max(0px,env(safe-area-inset-bottom))] z-50 w-full max-w-4xl px-4 pointer-events-none">

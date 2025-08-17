@@ -141,3 +141,39 @@ body::-webkit-scrollbar {
   background: linear-gradient(90deg, #22d3ee, #f472b6);
   box-shadow: 0 0 10px rgba(34,211,238,.5);
 }
+
+.death-background {
+  background: black;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  opacity: 1;
+  animation: fade-in 2s linear;
+}
+.death-text {
+  color: #ff0000;
+  font-family: OptimusPrinceps, sans-serif;
+  letter-spacing: 5px;
+  font-size: 8em;
+  font-weight: 400;
+  animation: fade-in 2s linear, text-zoom 1.5s linear;
+  user-select: none;
+}
+@keyframes fade-in {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 1; }
+}
+@keyframes text-zoom {
+  0% { font-size: 5em; }
+  25% { font-size: 6em; }
+  50% { font-size: 7em; }
+  75% { font-size: 8em; }
+  100% { font-size: 8em; }
+}
