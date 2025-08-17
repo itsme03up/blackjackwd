@@ -122,7 +122,7 @@ export default function Game() {
     <Layout>
       <div
         className="
-          relative mx-auto max-w-3xl min-h-[calc(100dvh-64px)] flex flex-col justify-start text-white text-center
+          relative mx-auto max-w-3xl min-h-[calc(100dvh-56px)] flex flex-col justify-start text-white text-center
           [--card-w:3.8rem] [--card-h:5.6rem]
           sm:[--card-w:4.4rem] sm:[--card-h:6.6rem]
           lg:[--card-w:5rem] lg:[--card-h:7.6rem]
