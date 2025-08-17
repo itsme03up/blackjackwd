@@ -3,8 +3,8 @@ import { Button } from '../components/ui/button'
 
 export default function Landing() {
     return (
-        <main className="relative mx-auto grid min-h-dvh place-items-center px-6">
-            <div className="relative min-h-dvh flex items-center justify-center bg-zinc-950 overflow-hidden">
+        <main className="relative w-full min-h-screen px-6 flex justify-center items-center">
+            <div className="max-w-3xl w-full min-h-screen flex items-center justify-center bg-zinc-950 overflow-hidden mr-32">
                 {/* 三本の縦線：アディダス風（全高） */}
                 <div
                     className="

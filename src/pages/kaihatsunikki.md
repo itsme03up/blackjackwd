@@ -220,4 +220,25 @@ SVGアセット自体の縦の長さを変更するには、SVGファイルを�
 
 Game画面にホームに戻るボタンをつけようとするも、競合していてうまいこと決まらない。諦めてNavbarを作成することに
 
+したらNavbarの左と上に謎の隙間が発生。タイムロス。
+
+body, html, #root のCSSは特に問題ありません。
+Navbarの fixed top-0 left-0 right-0 が効かない場合は、
+他の要素（例: #rootや親div）が overflow: hidden や position: relative になっていると、
+fixed 要素の表示が制限されることがあります。
+
+対策：
+
+#root や親要素に overflow: hidden を外してみる
+position: relative を外してみる
+ブラウザのDevToolsで nav 要素の位置・サイズ・z-indexを確認
+もし overflow: hidden が原因なら、#root のその指定を一度外してみてください。
+それでも直らない場合は、他のレイアウトや親要素のCSSを確認する必要があります。
+#root の margin: 0 auto; を margin: 0; に修正しました。
+これで左側の隙間も消え、コンテンツが画面左端から表示されます。
+
+解決！！
+
+
+
 
