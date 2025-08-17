@@ -9,7 +9,6 @@ body::-webkit-scrollbar {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 0;
   text-align: center;
   position: static;
   overflow: visible;
@@ -58,7 +57,7 @@ body::-webkit-scrollbar {
   color: #fff;
   background: linear-gradient(90deg, #0ff 0%, #f0f 100%);
   border: none;
-  border-radius:0.75rem;
+  border-radius:0.4rem;
   box-shadow:
     0 0 2px #0ff,
     0 0 8px #f0f,
@@ -67,8 +66,8 @@ body::-webkit-scrollbar {
     0 0 2px #0ff,
     0 0 4px #f0f;
   font-weight: bold;
-  font-size: 1.15rem;
-  padding: 0.75em 2em;
+  font-size: 1rem;
+  padding: 0.25em 0.75em;
   transition: box-shadow 0.2s, transform 0.2s;
   cursor: pointer;
   outline: none;
