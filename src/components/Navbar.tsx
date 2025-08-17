@@ -74,7 +74,7 @@ export default function Navbar() {
                         <NavigationMenuList className="flex items-center gap-5 md:gap-7 overflow-x-auto scrollbar-none" style={{ fontFamily: '"Stalinist One", sans-serif' }}>
                             {[
                                 { to: "/game", label: "Game" },
-                                { to: "/review-front", label: "Review" },
+                                { to: "/review", label: "Review" },
                                 { to: "/log", label: "Dev Log" },
                             ].map(({ to, label }) => (
                                 <NavigationMenuItem key={to}>

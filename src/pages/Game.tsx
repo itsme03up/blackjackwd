@@ -12,8 +12,8 @@ type Card = { suit: Suit; rank: string; value: number };
 // デッキ生成
 const createDeck = (): Card[] => {
   const suits: Suit[] = ["♥", "♦", "♣", "♠"];
-  const ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
-  const values = [11,2,3,4,5,6,7,8,9,10,10,10,10];
+  const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  const values = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
   const deck: Card[] = [];
   suits.forEach(s => ranks.forEach((r, i) => deck.push({ suit: s, rank: r, value: values[i] })));
   return deck;
@@ -94,6 +94,26 @@ export default function Game() {
       }
       return nh;
     });
+
+    // ディーラーも引く
+    setDealerHand(prevDealerHand => {
+      let dh = [...prevDealerHand];
+      let d = [...rest];
+      while (handValue(dh) < 17 && d.length > 0) {
+        dh.push(d[0]);
+        d = d.slice(1);
+      }
+      setDeck(d); // デッキを更新
+
+      // ディーラーバースト判定
+      if (handValue(dh) > 21) {
+        setHideDealerHole(false);
+        setMessage("ディーラーはバースト！プレイヤーの勝ちです。");
+        setMoney(m => m + bet);
+        setGameOver(false);
+      }
+      return dh;
+    });
   };
 
   // スタンド
@@ -136,7 +156,7 @@ export default function Game() {
     }
   }, [message]);
 
-  const canHit   = hideDealerHole && !gameOver && deck.length > 0;
+  const canHit = hideDealerHole && !gameOver && deck.length > 0;
   const canStand = hideDealerHole && !gameOver;
 
   return (
@@ -186,7 +206,12 @@ export default function Game() {
               />
             ))}
           </div>
-          {!hideDealerHole && <p className="mt-2">合計: {handValue(dealerHand)}</p>}
+          <div
+            className="mt-8 mb-6 text-lg font-bold text-white"
+            style={{ fontFamily: '"Stalinist One", sans-serif' }}
+          >
+            DEALER TOTAL: {handValue(dealerHand)}
+          </div>
         </section>
 
         {/* プレイヤー */}
@@ -197,7 +222,7 @@ export default function Game() {
               <CardSvg key={i} code={cardCode(c.rank, c.suit)} suit={c.suit} />
             ))}
           </div>
-          <p className="mt-2" style={{ fontFamily: '"Stalinist One", sans-serif' }}>Total: {handValue(playerHand)}</p>
+          <p className="mt-2" style={{ fontFamily: '"Stalinist One", sans-serif' }}>TOTAL: {handValue(playerHand)}</p>
         </section>
 
         {/* 操作ボタン */}
@@ -217,6 +242,9 @@ export default function Game() {
         </div>
 
         {message && <p className="mt-4 text-xl" role="status" aria-live="polite">{message}</p>}
+        {message === "ディーラーはバースト！プレイヤーの勝ちです。" && (
+          <div className="mt-2 text-2xl text-green-400 font-bold">ディーラーはバースト！プレイヤーの勝ちです。</div>
+        )}
         {(message === "プレイヤーの勝ちです！" || message === "ディーラーはバースト！プレイヤーの勝ちです。") && (
           <VictoryCanvas />
         )}
