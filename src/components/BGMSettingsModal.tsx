@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useLayoutEffect } from "react"
 import { Slider } from "@/components/ui/slider"
+import "../App.css";
 
 export type BGMSettingsModalProps = {
   open: boolean;
@@ -154,8 +155,8 @@ export default function BGMSettingsModal({
             </div>
           </div>
           {/* Volume */}
-          <div className="space-y-4 w-full max-w-md">
-            <div className="flex items-center justify-center gap-4 w-full max-w-md mx-auto">
+          <div className="space-y-4 w-full max-w-md slider-area">
+            <div className="flex items-center justify-center gap-4">
               <span className="text-base font-semibold text-cyan-400" style={{ fontFamily: '"Stalinist One", sans-serif' }}>VOLUME</span>
               <span className="text-base tabular-nums text-cyan-400" style={{ fontFamily: '"Stalinist One", sans-serif' }}>{bgmVolume}%</span>
             </div>
@@ -164,7 +165,7 @@ export default function BGMSettingsModal({
               onValueChange={v => setBgmVolume(v[0])}
               max={100}
               step={1}
-              className="w-full min-h-[40px] h-8 [&>span[data-orientation=horizontal]]:h-8 [&>span[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-white [&>span>span]:h-3 [&>span>span]:rounded-full [&>span>span]:bg-white [&>button]:h-8 [&>button]:w-8 [&>button]:min-w-[32px] [&>button]:min-h-[32px] [&>button]:bg-cyan-400 [&>button]:border-2 [&>button]:border-fuchsia-400 [&>button]:shadow-lg [&>button]:focus-visible:outline-none"
+              className="w-full min-h-[40px] h-8"
             />
           </div>
         </div>

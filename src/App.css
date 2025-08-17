@@ -200,3 +200,26 @@ body::-webkit-scrollbar {
   border-radius: 50%;
   box-shadow: 0 0 8px #22d3ee, 0 0 16px #d946ef;
 }
+
+/* BGMモーダル用スライダーのカスタムCSS（既存クラス上書き） */
+#bgm-modal [data-slot="slider-track"] {
+  height: 8px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(90deg, #22d3ee 0%, #d946ef 100%) !important;
+}
+#bgm-modal [data-slot="slider-range"] {
+  height: 8px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(90deg, #22d3ee 0%, #d946ef 100%) !important;
+}
+#bgm-modal [data-slot="slider-thumb"] {
+  width: 20px !important;
+  height: 20px !important;
+  background: #22d3ee !important;
+  border: 2px solid #d946ef !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 4px #22d3ee, 0 0 8px #d946ef !important;
+}
+#bgm-modal .slider-area {
+  margin: 24px 0;
+}
