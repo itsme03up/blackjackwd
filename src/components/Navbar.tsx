@@ -2,14 +2,18 @@
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/components/ui/navigation-menu"
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { cn } from "@/lib/utils"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import BGMSettingsModal from "@/components/BGMSettingsModal"
 
+const inline = true; // Define inline as needed (true or false)
+
 export default function Navbar() {
-    const [open, setOpen] = useState(false)
-    const [bgmEnabled, setBgmEnabled] = useState(true)
-    const [bgmVolume, setBgmVolume] = useState(60)
-    const [bgmFile, setBgmFile] = useState("port.mp3")
+    const [open, setOpen] = useState(false);
+    const [bgmEnabled, setBgmEnabled] = useState(true);
+    const [bgmFile, setBgmFile] = useState("/sounds/bgm1.mp3");
+    const [bgmVolume, setBgmVolume] = useState(60);
+    const [side, setSide] = useState<"left" | "right">("left");
+    const anchorRef = useRef<HTMLButtonElement>(null);
     const { pathname } = useLocation()
 
     // ルート遷移時は自動的に閉じる
@@ -19,8 +23,8 @@ export default function Navbar() {
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
         const onClick = (e: MouseEvent) => {
-            if (!popRef.current) return
-            if (!popRef.current.contains(e.target as Node)) setOpen(false)
+            if (!anchorRef.current) return
+            if (!anchorRef.current.contains(e.target as Node)) setOpen(false)
         }
         document.addEventListener("keydown", onKey)
         document.addEventListener("mousedown", onClick)
@@ -29,6 +33,20 @@ export default function Navbar() {
             document.removeEventListener("mousedown", onClick)
         }
     }, [])
+
+    useLayoutEffect(() => {
+        if (!open) return;
+        const calc = () => {
+            const el = anchorRef?.current;
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            const spaceRight = window.innerWidth - rect.left;
+            setSide(spaceRight < 380 ? "right" : "left");
+        };
+        calc();
+        window.addEventListener("resize", calc);
+        return () => window.removeEventListener("resize", calc);
+    }, [open, anchorRef]);
 
     return (
         <>
@@ -85,11 +103,13 @@ export default function Navbar() {
                 </div>
 
                 {/*右：BGMボタン＋モーダル（relativeでabsolute配置）*/}
-                <div className="relative flex items-center gap-4 pr-2">
+                <div className="relative overflow-visible flex items-center gap-4 pr-2">
                     <button
+                        ref={anchorRef}
                         id="bgm-anchor"
-                        className="text-xs tracking-wider text-cyan-300 select-none font-mono hover:text-cyan-200 transition px-2 py-1 rounded-md hover:bg-zinc-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
-                        style={{ fontFamily: '"Stalinist One", sans-serif' }}
+                        className="text-xs tracking-wider text-cyan-300 font-mono px-2 py-1 rounded-md
+               hover:text-cyan-200 hover:bg-zinc-800/60 transition
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
                         onClick={() => setOpen(v => !v)}
                     >
                         BGM
@@ -108,6 +128,16 @@ export default function Navbar() {
                 </div>
             </div>
         </header >
+        {!inline && <div className="fixed inset-0 z-[60]" aria-hidden />}
+        {/* If you need to use pos, calculate it here */}
+        {/*
+          Example usage for pos:
+          const pos = inline
+            ? side === "left"
+                ? "absolute left-0 top-[calc(100%+8px)]"
+                : "absolute right-0 top-[calc(100%+8px)]"
+            : "fixed top-16 right-4";
+        */}
         </>
   )
 }

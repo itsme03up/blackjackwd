@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState, useLayoutEffect } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 
@@ -30,6 +30,16 @@ export default function BGMSettingsModal({
   onClose,
 }: BGMSettingsModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
+  const [side, setSide] = useState<"left"|"right">("left");
+
+  useLayoutEffect(() => {
+    if (!open || !inline) return;
+    const el = panelRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const spaceRight = window.innerWidth - rect.left;
+    setSide(spaceRight < 420 ? "right" : "left");
+  }, [open, inline]);
 
   // Esc で閉じる
   useEffect(() => {
@@ -52,9 +62,7 @@ export default function BGMSettingsModal({
 
   if (!open) return null
 
-  const positionClass = inline
-    ? "absolute left-10 top-[calc(100%+8px)]"
-    : "fixed top-16 left-10";
+  const positionClass = "fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[min(98vw,600px)] h-[min(90vh,480px)]";
 
   return (
     <>
@@ -65,7 +73,10 @@ export default function BGMSettingsModal({
         ref={panelRef}
         role="dialog"
         aria-label="BGM 設定"
-        className={[positionClass,
+        className={[
+          positionClass,
+          "max-w-full",
+          "overflow-x-auto",
           "z-[70] w-[min(92vw,420px)]",
           "origin-top-left animate-in fade-in-0 zoom-in-95",
           "rounded-2xl bg-zinc-900/80 backdrop-blur-xl",
