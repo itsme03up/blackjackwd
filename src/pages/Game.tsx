@@ -5,6 +5,7 @@ import { cardCode } from "@/lib/cardCode";
 import { Button } from "@/components/ui/button";
 import { Scoreboard } from "@/components/Scoreboard";
 import Layout from "@/components/layout";
+import { VictoryCanvas } from "@/components/VictoryCanvas";
 
 type Suit = "♥" | "♦" | "♣" | "♠";
 type Card = { suit: Suit; rank: string; value: number };
@@ -137,13 +138,7 @@ export default function Game() {
           className="absolute top-[18%] left-[6%] z-50 w-auto max-h-[60vh] min-w-[200px] object-contain pointer-events-none select-none"
         />
         {(message === "プレイヤーの勝ちです！" || message === "ディーラーはバースト！プレイヤーの勝ちです。") && (
-          <div className="absolute left-[6%] top-[10%] z-30 pointer-events-none">
-            <DotLottieReact
-              src="https://lottie.host/fbac7aa6-9403-4021-81a4-d5f89c262d0d/aCLTFcreGF.lottie"
-              loop
-              autoplay
-              style={{ width: 240, height: 180 }}
-            />
+          <div className="absolute top-0 left-0 w-full flex justify-center z-50" style={{ pointerEvents: 'none' }}>
           </div>
         )}
 
@@ -202,8 +197,7 @@ export default function Game() {
 
         {message && <p className="mt-4 text-xl" role="status" aria-live="polite">{message}</p>}
         {(message === "プレイヤーの勝ちです！" || message === "ディーラーはバースト！プレイヤーの勝ちです。") && (
-          <div className="absolute top-0 left-0 w-full flex justify-center z-50" style={{ pointerEvents: 'none' }}>
-          </div>
+          <VictoryCanvas />
         )}
         {gameOver && <p className="mt-4 text-2xl text-yellow-300">所持金がなくなりました。ゲーム終了です。</p>}
 
