@@ -119,7 +119,7 @@ export default function Game() {
     <Layout>
       <div
         className="
-          relative mx-auto max-w-3xl p-6 text-white text-center
+          relative mx-auto max-w-3xl p-6 pr-64 text-white text-center
           [--card-w:4.2rem] [--card-h:6.2rem]
           sm:[--card-w:5rem] sm:[--card-h:7.4rem]
           lg:[--card-w:5.8rem] lg:[--card-h:8.8rem]
