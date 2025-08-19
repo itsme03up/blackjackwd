@@ -24,12 +24,12 @@ export const VictoryCanvas: React.FC = () => {
     const ctx = c.getContext('2d');
     if (!ctx) return;
 
-    let difX = Math.sqrt(3) * opts.side / 2;
-    let difY = opts.side * 3 / 2;
-    let rad = Math.PI / 6;
-    let cos = Math.cos(rad) * opts.side;
-    let sin = Math.sin(rad) * opts.side;
-    let hexs: any[] = [];
+    const difX = Math.sqrt(3) * opts.side / 2;
+    const difY = opts.side * 3 / 2;
+    const rad = Math.PI / 6;
+    const cos = Math.cos(rad) * opts.side;
+    const sin = Math.sin(rad) * opts.side;
+    let hexs: Hex[] = [];
     let tick = 0;
 
     function loop() {
