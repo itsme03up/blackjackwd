@@ -21,8 +21,8 @@ export default function Landing() {
                         style={{
                             // 太さ・間隔一括調整できる
                             // 例: 幅 6px / 間隔 10px（モバイル）, 幅 10px / 間隔 16px（PC）
-                            ['--stripe-w' as any]: '24px',
-                            ['--stripe-gap' as any]: '30px',
+                            ['--stripe-w' as string]: '24px',
+                            ['--stripe-gap' as string]: '30px',
                         }}
                     >
                         <span className="block h-full w-[var(--stripe-w)] bg-white rounded-sm [box-shadow:0_0_12px_var(--neon-blue)]" style={{ backgroundColor: 'rgba(255,255,255,0.7)' }} />
