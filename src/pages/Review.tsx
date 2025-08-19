@@ -1,9 +1,4 @@
 // src/pages/Review.tsx
-import { Callout } from "@/components/Callout";
-import { DiffBlock } from "@/components/DiffBlock";
-import { ReviewTOC } from "@/components/ReviewTOC";
-import React from "react";
-// 冒頭に追加
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Popover } from "@/components/ui/popover";
 import { CodeBlock } from "@/components/CodeBlock"
