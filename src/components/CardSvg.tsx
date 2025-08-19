@@ -11,12 +11,13 @@ const rawModules = import.meta.glob('/src/assets/cards/*.svg', { eager: true });
 const rawModulesComponent = import.meta.glob('/src/assets/cards/*.svg?component', { eager: true });
 
 // 2) ファイル名（拡張子なし）→ モジュール で引けるようマップ化
-type AnyMod = any;
-const map: Record<string, AnyMod> = {};
+type SvgComponent = React.FC<React.SVGProps<SVGSVGElement>>;
+type CardModule = SvgComponent | { default: SvgComponent } | string;
+const map: Record<string, CardModule> = {};
 for (const [path, mod] of Object.entries({ ...rawModules, ...rawModulesComponent })) {
   const file = path.split("/").pop()!;         // "ace_of_spades.svg?component" も来る
   const base = file.replace(/\.svg(\?component)?$/, ""); // → "ace_of_spades"
-  map[base] = mod;
+  map[base] = mod as CardModule;
 }
 // if (import.meta.env.DEV) {
 //   console.log('cards loaded:', Object.keys(map).slice(0, 8))
@@ -66,7 +67,7 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   //   a) Reactコンポーネントが default に入っている
   //   b) 文字列URL（<img src> 用）
   //   c) そのまま関数（コンポーネント）として返る
-  const CompOrUrl = (mod as any).default ?? mod;
+  const CompOrUrl = (typeof mod === 'object' && 'default' in mod) ? mod.default : mod;
 
   const color = suit === "♥" || suit === "♦" ? "text-rose-400" : "text-zinc-100";
 
@@ -99,9 +100,25 @@ export const CardSvg: FC<Props> = memo(({ code, suit, back }) => {
   // Reactコンポーネントとして描画
   const Svg: React.FC<React.SVGProps<SVGSVGElement>> = CompOrUrl;
   // viewBox取得とデバッグ
-  let viewBox = (Svg as any)?.type?.viewBox || (Svg as any)?.viewBox;
-  if (!viewBox && (Svg as any)?.props?.viewBox) {
-    viewBox = (Svg as any).props.viewBox;
+  let viewBox: string | undefined = undefined;
+  if (
+    'type' in Svg &&
+    Svg.type !== null &&
+    typeof Svg.type === 'object' &&
+    'viewBox' in Svg.type
+  ) {
+    viewBox = (Svg.type as { viewBox?: string }).viewBox;
+  } else if ('viewBox' in Svg) {
+    viewBox = (Svg as { viewBox?: string }).viewBox;
+  }
+  if (
+    !viewBox &&
+    'props' in Svg &&
+    Svg.props !== null &&
+    typeof Svg.props === 'object' &&
+    'viewBox' in Svg.props
+  ) {
+    viewBox = (Svg.props as { viewBox?: string }).viewBox;
   }
   console.log('CardSvg viewBox:', viewBox, 'code:', code);
   const aspectClass = getAspectFromViewBox(viewBox);
