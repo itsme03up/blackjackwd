@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import BGMSettingsModal from "@/components/BGMSettingsModal"
 import BGMController from "@/components/BGMController"
 
-const inline = true; // Define inline as needed (true or false)
+// Removed unused variable 'inline'
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ export default function Navbar() {
     // BGMController 側は `/sounds/${bgmFile}` を付ける実装なのでファイル名のみを保持
     const [bgmFile, setBgmFile] = useState("port.mp3");
     const [bgmVolume, setBgmVolume] = useState(60);
-    const [side, setSide] = useState<"left" | "right">("left");
+    const [, setSide] = useState<"left" | "right">("left"); // keep setSide, remove unused 'side'
     const anchorRef = useRef<HTMLButtonElement>(null);
     const { pathname } = useLocation()
 
