@@ -97,7 +97,7 @@ export default function Game() {
 
     // ディーラーも引く
     setDealerHand(prevDealerHand => {
-      let dh = [...prevDealerHand];
+      const dh = [...prevDealerHand];
       let d = [...rest];
       while (handValue(dh) < 17 && d.length > 0) {
         dh.push(d[0]);
@@ -121,7 +121,7 @@ export default function Game() {
     if (gameOver || !hideDealerHole) return;
     setHideDealerHole(false);
 
-    let dh = [...dealerHand];
+    const dh = [...dealerHand];
     let d = [...deck];
     while (handValue(dh) < 17 && d.length > 0) {
       dh.push(d[0]); d = d.slice(1);
